@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tentang Toko - Aromix</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-image: url('https://i.pinimg.com/736x/b6/f3/3e/b6f33ea34665cbd01eb43b3dee30e22d.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #5a3e3a;
+    }
+    .header {
+      background-image: url('https://i.pinimg.com/736x/10/ce/da/10cedac34a60c0fcb39a8555f0b144cd.jpg');
+      background-size: cover;
+      background-position: center top;
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+      border-radius: 0 0 20px 20px;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #7a4f4a;
+      padding: 0 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav-left {
+      display: flex;
+      gap: 10px;
+    }
+    .navbar a {
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .navbar a:hover {
+      background-color: #a07f7a;
+    }
+    .nav-center {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .nav-right {
+      position: relative;
+      display: inline-block;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 30px auto 50px auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      color: #5a3e3a;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #7a4f4a;
+      margin-top: 1.2em;
+      margin-bottom: 0.5em;
+    }
+    p, li {
+      font-size: 16px;
+      margin-bottom: 0.8em;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      margin-bottom: 1em;
+    }
+    .tagline {
+      font-style: italic;
+      font-weight: bold;
+      margin-top: 0.5em;
+      margin-bottom: 1.5em;
+      color: #b35c7e;
+      font-size: 18px;
+    }
+    .section-icon {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+    .contact-list li {
+      margin-bottom: 0.5em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  Toko Parfum Aromix
+</div>
+
+<div class="navbar">
+  <div class="nav-left">
+    <a href="index.html">Beranda</a>
+    <a href="koleksi.html">Koleksi</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="keranjang.html">Keranjang</a>
+    <a href="checkout.html">Checkout</a>
+  </div>
+  <div class="nav-center">
+    <!-- Search bar removed as per user request -->
+  </div>
+  <div class="nav-right" id="navRight">
+    <!-- Content will be dynamically updated by JS -->
+  </div>
+</div>
+
+<div class="main-content">
+  <h1>Tentang Toko Aromix</h1>
+
+  <section>
+    <h2>1. Nama dan Identitas Toko</h2>
+    <h3>Aromix</h3>
+    <p><span class="section-icon">🔍</span>Makna dan Kesan Nama "Aromix"</p>
+    <ul>
+      <li>"Aro" dari kata Aroma = langsung mengarah pada dunia parfum dan wewangian.</li>
+      <li>"Mix" = mencerminkan kombinasi aroma, personalisasi, atau ragam pilihan parfum.</li>
+      <li>Terdengar kekinian, simpel, dan mudah diingat.</li>
+      <li>Cocok untuk target pasar muda maupun dewasa.</li>
+    </ul>
+    <p class="tagline">Tagline: "Karena Setiap Aroma Punya Cerita."</p>
+  </section>
+
+  <section>
+    <h2>2. Visi & Misi</h2>
+    <h3>Visi</h3>
+    <p>Menjadi brand parfum lokal pilihan utama yang menghadirkan pengalaman aroma yang personal, berkualitas, dan berkesan untuk setiap orang.</p>
+    <h3>Misi</h3>
+    <ul>
+      <li>Menyediakan beragam pilihan parfum berkualitas tinggi dengan harga terjangkau.</li>
+      <li>Menghadirkan aroma yang bisa mencerminkan kepribadian, mood, atau momen spesial setiap pelanggan.</li>
+      <li>Terus berinovasi dalam menciptakan kombinasi aroma unik dan kekinian.</li>
+      <li>Memberikan pelayanan yang cepat, ramah, dan profesional baik secara online maupun offline.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>3. Alamat & Lokasi</h2>
+    <p><span class="section-icon">📍</span>Offline Store:<br />
+    Jl. Cendana No. 45, Lowokwaru, Malang, Jawa Timur</p>
+    <p><span class="section-icon">🛒</span>Online Order:<br />
+    Kami melayani pemesanan ke seluruh Indonesia melalui marketplace dan media sosial.</p>
+  </section>
+
+  <section>
+    <h2>4. Kontak</h2>
+    <ul class="contact-list">
+      <li>📱 WhatsApp: 08xx-xxxx-xxxx</li>
+      <li>📧 Email: hello.dwihabiba165@gmail.com</li>
+      <li>📸 Instagram: @biba_biaa</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Jenis Produk atau Layanan</h2>
+    <p>Aromix adalah toko parfum yang menyediakan parfum original dan inspired dari brand-brand terkenal dunia. Mulai dari Chanel, Dior, YSL, Gucci, hingga varian parfum niche — kami hadir untuk menghadirkan wangi khas favoritmu dengan harga yang lebih terjangkau.</p>
+    <p>Kami juga menyediakan parfum decant (isi ulang kemasan kecil) untuk kamu yang ingin coba dulu sebelum membeli full size. Dengan banyak pilihan aroma, pelanggan bisa menyesuaikan parfum dengan gaya, momen, dan kepribadiannya.</p>
+  </section>
+
+  <section>
+    <h2>6. Keunggulan Toko</h2>
+    <ul>
+      <li>✅ Produk Original & Trusted – Kami menjual parfum original dan inspired pilihan dari brand terkenal.</li>
+      <li>✅ Decant Parfum Premium – Cocok buat coba-coba aroma tanpa harus beli botol besar.</li>
+      <li>✅ Varian Lengkap – Mulai dari EDP, EDT, sampai niche fragrance.</li>
+      <li>✅ Harga Bersahabat – Kualitas premium dengan harga yang masuk akal.</li>
+      <li>✅ Banyak Repeat Order – Dipercaya pelanggan dari berbagai kota di Indonesia.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Cerita Singkat</h2>
+    <p>Aromix berdiri di Malang berawal dari kecintaan kami terhadap parfum-parfum branded yang punya karakter unik dan tak tergantikan. Sayangnya, nggak semua orang bisa langsung beli full size dengan harga cukup tinggi.</p>
+    <p>Dari situlah kami mulai menghadirkan parfum original dan decant dari brand-brand ternama, agar semua orang bisa menikmati aroma khas favorit mereka dengan cara yang lebih fleksibel dan hemat.</p>
+    <p>Kami percaya, “Setiap aroma punya cerita”, dan parfum yang tepat bisa membangkitkan kenangan, rasa percaya diri, bahkan menciptakan kesan yang tak terlupakan. Di Aromix, kamu bisa temukan aroma yang cocok untuk setiap momen hidupmu.</p>
+  </section>
+</div>
+
+<script>
+  // Store current page as lastPage in sessionStorage for redirect after login/registration
+  sessionStorage.setItem('lastPage', window.location.pathname.split('/').pop() || 'beranda.html');
+
+  // Function to check if user is logged in
+  function isLoggedIn() {
+    return localStorage.getItem('loggedInUser') !== null;
+  }
+
+  // Function to get logged in user data
+  function getLoggedInUser() {
+    const username = localStorage.getItem('loggedInUser');
+    if (!username) return null;
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    return users[username] || null;
+  }
+
+  // Function to update navbar right section based on login state
+  function updateNavbar() {
+    const navRight = document.getElementById('navRight');
+    navRight.innerHTML = '';
+    if (isLoggedIn()) {
+      const user = getLoggedInUser();
+
+      // Create Profil Saya button
+      const profileBtn = document.createElement('button');
+      profileBtn.className = 'dropdown-btn';
+      profileBtn.textContent = 'Profil Saya';
+      profileBtn.id = 'profileBtn';
+      navRight.appendChild(profileBtn);
+
+      // Create popup container
+      const popup = document.createElement('div');
+      popup.id = 'profilePopup';
+      popup.style.position = 'absolute';
+      popup.style.top = '50px';
+      popup.style.right = '0';
+      popup.style.backgroundColor = 'white';
+      popup.style.border = '1px solid #ccc';
+      popup.style.borderRadius = '8px';
+      popup.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      popup.style.padding = '20px';
+      popup.style.width = '250px';
+      popup.style.display = 'none';
+      popup.style.zIndex = '1000';
+
+      // Profile photo
+      const photoDiv = document.createElement('div');
+      photoDiv.style.width = '80px';
+      photoDiv.style.height = '80px';
+      photoDiv.style.borderRadius = '50%';
+      photoDiv.style.backgroundColor = '#d8a6b8';
+      photoDiv.style.backgroundSize = 'cover';
+      photoDiv.style.backgroundPosition = 'center';
+      if (user.photo) {
+        photoDiv.style.backgroundImage = `url(${user.photo})`;
+      }
+      popup.appendChild(photoDiv);
+
+      // User info
+      const nameDiv = document.createElement('div');
+      nameDiv.style.textAlign = 'center';
+      nameDiv.style.marginBottom = '15px';
+      nameDiv.innerHTML = `<strong>${user.fullName || user.username}</strong><br/><small>${user.email || ''}</small>`;
+      popup.appendChild(nameDiv);
+
+      // Logout button
+      const logoutBtn = document.createElement('button');
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.style.backgroundColor = '#b35c7e';
+      logoutBtn.style.color = 'white';
+      logoutBtn.style.border = 'none';
+      logoutBtn.style.padding = '10px 20px';
+      logoutBtn.style.borderRadius = '6px';
+      logoutBtn.style.cursor = 'pointer';
+      logoutBtn.style.width = '100%';
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUser');
+        location.reload();
+      });
+      popup.appendChild(logoutBtn);
+
+      navRight.appendChild(popup);
+
+      // Toggle popup on button click
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // Close popup when clicking outside
+      document.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+
+      // Prevent popup click from closing it
+      popup.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+    } else {
+      const loginLink = document.createElement('a');
+      loginLink.href = 'login.html';
+      loginLink.className = 'nav-link';
+      loginLink.textContent = 'Login';
+      navRight.appendChild(loginLink);
+
+      const registerLink = document.createElement('a');
+      registerLink.href = 'daftar.html';
+      registerLink.className = 'nav-link';
+      registerLink.textContent = 'Daftar';
+      navRight.appendChild(registerLink);
+    }
+  }
+
+  // Initialize navbar on page load
+  document.addEventListener('DOMContentLoaded', updateNavbar);
+</script>
+
+</body>
+</html>

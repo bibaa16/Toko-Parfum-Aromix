@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Koleksi - Toko Parfum</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4e1d2;
+      background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #5a3e3a;
+    }
+    .header {
+      background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+      border-radius: 0 0 20px 20px;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #7a4f4a;
+      padding: 0 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav-left {
+      display: flex;
+      gap: 10px;
+    }
+    .navbar a {
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .navbar a:hover {
+      background-color: #a07f7a;
+    }
+    .nav-center {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+  #searchInput {
+      width: 300px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 2px solid #ffc0cb; /* soft pink border to match beranda */
+      background-color: #fff0f5; /* very light pink background */
+      font-size: 16px;
+    }
+    .nav-right {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-btn {
+      background-color: #7a4f4a;
+      color: white;
+      border: none;
+      padding: 14px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .dropdown-btn:hover {
+      background-color: #a07f7a;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 120px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 4px;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 10px 14px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+    .show {
+      display: block;
+    }
+    #suggestions {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 300px;
+      font-size: 16px;
+      z-index: 2;
+      border-radius: 0 0 4px 4px;
+    }
+    #suggestions div {
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    #suggestions div:hover {
+      background-color: #f0f0f0;
+    }
+    .main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255,255,255,0.85);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .main h1 {
+      color: #7a4f4a;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    /* A-Z Navigation */
+    .az-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .az-nav a {
+      display: inline-block;
+      padding: 8px 14px;
+      background-color: #d8a6b8; /* softer pink */
+      color: white;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease;
+    }
+    .az-nav a:hover {
+      background-color: #c48ca3; /* slightly darker soft pink on hover */
+    }
+    /* Letter Section */
+    .letter-section {
+      margin-bottom: 50px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .letter-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .letter-title {
+      font-size: 32px;
+      color: #7a4f4a;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #bfa5a0;
+      padding-bottom: 8px;
+      font-weight: 700;
+      /* Removed flex and gap to remove flower icon */
+      display: block;
+      align-items: initial;
+      gap: 0;
+    }
+    /* Flower ornament next to letter */
+    .flower-icon {
+      display: none;
+      width: 0;
+      height: 0;
+      background-image: none;
+      background-size: none;
+      background-repeat: none;
+      filter: none;
+    }
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    /* Product Card */
+    .product-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 20px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(180,120,70,0.3);
+    }
+    .product-image {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      margin: 0 auto 15px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .product-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #5a3e3a;
+      margin: 10px 0 6px 0;
+    }
+    .product-type {
+      font-size: 16px;
+      font-weight: 600;
+      color: #b07a4a;
+      margin-bottom: 8px;
+    }
+    .product-desc {
+      font-size: 14px;
+      color: #7a4f4a;
+      margin-bottom: 15px;
+      min-height: 40px;
+    }
+    .buy-button {
+      background-color: #d8a6b8; /* softer pink */
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      align-self: center;
+      width: 140px;
+    }
+    .buy-button:hover {
+      background-color: #c48ca3; /* slightly darker soft pink on hover */
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .product-card {
+        padding: 15px 10px;
+      }
+      .product-image {
+        width: 140px;
+        height: 140px;
+      }
+      .buy-button {
+        width: 120px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 480px) {
+      .az-nav {
+        gap: 6px;
+      }
+      .az-nav a {
+        padding: 6px 10px;
+        font-size: 14px;
+      }
+      .product-name {
+        font-size: 18px;
+      }
+      .product-type {
+        font-size: 14px;
+      }
+      .product-desc {
+        font-size: 13px;
+      }
+      .buy-button {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 14px;
+      }
+    }
+  .product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #b35c7e;
+    margin: 8px 0 12px 0;
+  }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Toko Parfum Aromix
+</div>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="nav-left">
+    <a href="index.html">Beranda</a>
+    <a href="koleksi.html">Koleksi</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="keranjang.html">Keranjang</a>
+    <a href="checkout.html">Checkout</a>
+  </div>
+<div class="nav-center">
+  <div style="position: relative;">
+    <form id="searchForm" action="koleksi.html" method="GET" style="margin:0; display: flex; align-items: center; gap: 8px;">
+      <input type="text" id="searchInput" name="search" placeholder="cari parfum favoritmu" autocomplete="off" />
+      <button type="submit" style="padding: 6px 12px; background-color: #b35c7e; color: white; border: none; border-radius: 4px; cursor: pointer;">Cari</button>
+      <div id="suggestions" style="position: absolute; top: 100%; left: 0;"></div>
+    </form>
+  </div>
+</div>
+  <div class="nav-right" id="navRight">
+    <!-- Content will be dynamically updated by JS -->
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+  <h1>Koleksi Parfum A-Z</h1>
+  <!-- A-Z Navigation -->
+  <nav class="az-nav" aria-label="Navigasi huruf A sampai Z dan kategori lainnya">
+    <a href="#letter-A">A</a>
+    <a href="#letter-B">B</a>
+    <a href="#letter-C">C</a>
+    <a href="#letter-D">D</a>
+    <a href="#letter-E">E</a>
+    <a href="#letter-F">F</a>
+    <a href="#letter-G">G</a>
+    <a href="#letter-H">H</a>
+    <a href="#letter-I">I</a>
+    <a href="#letter-J">J</a>
+    <a href="#letter-K">K</a>
+    <a href="#letter-L">L</a>
+    <a href="#letter-M">M</a>
+    <a href="#letter-N">N</a>
+    <a href="#letter-O">O</a>
+    <a href="#letter-P">P</a>
+    <a href="#letter-Q">Q</a>
+    <a href="#letter-R">R</a>
+    <a href="#letter-S">S</a>
+    <a href="#letter-T">T</a>
+    <a href="#letter-U">U</a>
+    <a href="#letter-V">V</a>
+    <a href="#letter-W">W</a>
+    <a href="#letter-X">X</a>
+    <a href="#letter-Y">Y</a>
+    <a href="#letter-Z">Z</a>
+    <a href="#category-Unisex">Unisex</a>
+    <a href="#category-Eksklusif">Eksklusif</a>
+  </nav>
+
+  <div id="productContainer">
+    <!-- Letter sections will be dynamically inserted here -->
+  </div>
+  <!-- Additional sections for Unisex and Eksklusif -->
+  <section id="category-Unisex" class="letter-section">
+    <h2 class="letter-title">Parfum Unisex</h2>
+    <div class="product-grid" id="unisexGrid"></div>
+  </section>
+  <section id="category-Eksklusif" class="letter-section">
+    <h2 class="letter-title">Parfum Eksklusif</h2>
+    <div class="product-grid" id="eksklusifGrid"></div>
+  </section>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  &copy; 2025 Toko Parfum. All rights reserved.
+</div>
+
+<script>
+  // Toggle dropdown akun saya
+  function toggleDropdown() {
+    document.getElementById("dropdownMenu").classList.toggle("show");
+  }
+  // Close dropdown if clicked outside
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-btn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  // Data for 52 products: 2 per letter (1 male, 1 female)
+  // Added Unisex and Eksklusif categories separately
+  const products = {
+    A: [
+      {name: "Acqua di Giò Profumo – Giorgio Armani", type: "Pria", desc: "Aroma laut yang segar dengan sentuhan patchouli dan dupa, menciptakan kesan maskulin dan elegan.", img: "https://i.pinimg.com/736x/a4/13/95/a4139561ff083565772a4cc138aee5ea.jpg", price: "Rp 1.200.000"},
+      {name: "Angel – Mugler", type: "Wanita", desc: "Parfum gourmand pertama yang memadukan praline, vanila, dan patchouli, memberikan aroma manis dan sensual.", img: "https://i.pinimg.com/736x/30/8d/41/308d417eff815899260bda0396a478bf.jpg", price: "Rp 1.100.000"}
+    ],
+    B: [
+      {name: "Black Opium – Yves Saint Laurent", type: "Wanita", desc: "Kombinasi kopi, vanila, dan bunga putih yang menciptakan aroma manis dan menggoda.", img: "https://i.pinimg.com/736x/65/a7/62/65a7629156c130b10a219db87ea54965.jpg", price: "Rp 1.000.000"},
+      {name: "Bleu de Chanel – Chanel", type: "Pria", desc: "Aroma citrus dan woody yang segar dan elegan, cocok untuk pria yang percaya diri.", img: "https://i.pinimg.com/736x/0f/02/e1/0f02e1774a0ab058c376cf33b4f05f6e.jpg", price: "Rp 1.300.000"}
+    ],
+    C: [
+      {name: "Creed Aventus – Creed", type: "Pria", desc: "Aroma buah nanas dan blackcurrant yang segar, dengan dasar musk dan oakmoss yang maskulin.", img: "https://i.pinimg.com/736x/4f/f2/31/4ff231f98a5a5e0613c062ed7710eac4.jpg", price: "Rp 2.500.000"},
+      {name: "Chanel No. 5 – Chanel", type: "Wanita", desc: "Parfum klasik dengan aroma floral aldehyde yang elegan dan abadi.", img: "https://i.pinimg.com/736x/1d/78/65/1d78655e6e1c5f86daaa8e6e91988eb7.jpg", price: "Rp 2.200.000"}
+    ],
+    D: [
+      {name: "Dior Sauvage – Dior", type: "Pria", desc: "Aroma segar dan spicy dengan bergamot dan ambroxan, memberikan kesan liar dan bebas.", img: "https://i.pinimg.com/736x/31/c7/8a/31c78aad251eb9688f6087556e52d2ee.jpg", price: "Rp 1.800.000"},
+      {name: "Daisy – Marc Jacobs", type: "Wanita", desc: "Aroma bunga liar yang segar dan feminin, cocok untuk penggunaan sehari-hari.", img: "https://i.pinimg.com/736x/b1/fb/5f/b1fb5fd1f87007c226df9c04897aacc2.jpg", price: "Rp 1.400.000"}
+    ],
+   
+    E: [
+      {name: "Eros – Versace", type: "Pria", desc: "Aroma mint, green apple, dan vanila yang segar dan manis, menciptakan kesan penuh gairah.", img: "https://i.pinimg.com/736x/c1/e1/84/c1e184a70843e69d27b5316ee32ed138.jpg", price: "Rp 1.500.000"},
+      {name: "Euphoria – Calvin Klein", type: "Wanita", desc: "Aroma eksotis dengan pomegranate dan anggrek hitam, menciptakan kesan misterius dan sensual.", img: "https://i.pinimg.com/736x/25/9e/76/259e76a2416431e17ad0c50f5baba57a.jpg", price: "Rp 1.400.000"}
+    ],
+    F: [
+      {name: "Fahrenheit – Dior", type: "Pria", desc: "Aroma kulit dan bunga violet yang unik, menciptakan kesan hangat dan maskulin.", img: "https://i.pinimg.com/736x/22/a8/67/22a86754f0674279d7f52ca40720c501.jpg", price: "Rp 1.200.000"},
+      {name: "Flowerbomb – Viktor & Rolf", type: "Wanita", desc: "Ledakan aroma bunga yang manis dan memikat, dengan jasmine dan patchouli.", img: "https://i.pinimg.com/736x/bd/7b/74/bd7b744809cc22f304f3f4dd017f75c7.jpg", price: "Rp 1.100.000"}
+    ],
+    G: [
+      {name: "Gucci Bloom – Gucci", type: "Wanita", desc: "Aroma bunga putih yang kaya dan alami, dengan jasmine dan tuberose.", img: "https://i.pinimg.com/736x/c3/f9/2d/c3f92dce3a867224532555f34e39260e.jpg", price: "Rp 1.150.000"},
+      {name: "Gentleman – Givenchy", type: "Pria", desc: "Aroma woody dan spicy dengan lavender dan patchouli, menciptakan kesan elegan dan berkelas.", img: "https://i.pinimg.com/736x/1c/3b/44/1c3b44e5bf7a4f30d3088f466f95af37.jpg", price: "Rp 1.300.000"}
+    ],
+    H: [
+      {name: "Hypnotic Poison – Dior", type: "Wanita", desc: "Aroma vanila dan almond yang manis dan menggoda, menciptakan kesan misterius.", img: "https://i.pinimg.com/736x/c2/0a/75/c20a754fb03962252ce94d6fa7e78be1.jpg", price: "Rp 1.100.000"},
+      {name: "Hugo Man – Hugo Boss", type: "Pria", desc: "Aroma segar dengan green apple dan mint, cocok untuk pria aktif dan dinamis.", img: "https://i.pinimg.com/736x/13/e4/be/13e4be91c9ae7459415b3a5646d56018.jpg", price: "Rp 1.250.000"}
+    ],
+    I: [
+      {name: "Idôle – Lancôme", type: "Wanita", desc: "Aroma floral yang ringan dan bersih dengan rose dan jasmine, menciptakan kesan modern dan elegan.", img: "https://i.pinimg.com/736x/64/dc/60/64dc608352d4e15f7506bdadff960864.jpg", price: "Rp 1.200.000"},
+      {name: "Invictus – Paco Rabanne", type: "Pria", desc: "Aroma segar dan sporty dengan grapefruit dan marine accord, cocok untuk pria yang aktif.", img: "https://i.pinimg.com/736x/d3/f1/11/d3f1115b629ec911ca145bf6fac6d57c.jpg", price: "Rp 1.300.000"}
+    ],
+      J: [
+      {name: "J'adore – Dior", type: "Wanita", desc: "Aroma bunga yang mewah dengan jasmine dan ylang-ylang, menciptakan kesan feminin dan elegan.", img: "https://i.pinimg.com/736x/ab/01/10/ab0110b833eb3da78eb535526cc0a59b.jpg", price: "Rp 1.350.000"},
+      {name: "Joop! Homme – Joop!", type: "Pria", desc: "Aroma manis dan spicy dengan cinnamon dan orange blossom, menciptakan kesan berani dan unik.", img: "https://i.pinimg.com/736x/5e/4b/57/5e4b57669596e596b6387cf075c3700c.jpg", price: "Rp 1.200.000"}
+    ],
+    K: [
+      {name: "Kenzo Flower – Kenzo", type: "Wanita", desc: "Aroma floral oriental dengan kombinasi blackcurrant, rose, dan vanilla, memberikan kesan feminin dan elegan.", img: "https://i.pinimg.com/736x/ff/3d/90/ff3d90941633e79c61f64d3a2c783d93.jpg", price: "Rp 1.250.000"},
+      {name: "K by Dolce & Gabbana – Dolce & Gabbana", type: "Pria", desc: "Aroma woody aquatic dengan sentuhan mint, citrus, dan vanilla, menciptakan kesan segar dan maskulin.", img: "https://i.pinimg.com/736x/1f/fe/aa/1ffeaa341af4fc96ba5ec449691a5c50.jpg", price: "Rp 1.400.000"}
+    ],
+    L: [
+      {name: "La Vie Est Belle – Lancôme", type: "Wanita", desc: "Aroma manis dan floral dengan kombinasi iris, praline, dan patchouli, memberikan kesan bahagia dan optimis.", img: "https://i.pinimg.com/736x/83/76/19/837619690961194b86b40ac50b14cf69.jpg", price: "Rp 1.500.000"},
+      {name: "Le Male – Jean Paul Gaultier", type: "Pria", desc: "Aroma spicy woody dengan sentuhan ginger dan cedarwood, menciptakan kesan elegan dan modern.", img: "https://i.pinimg.com/736x/35/61/07/356107f102a13fa780e7cfb5f62e0778.jpg", price: "Rp 1.350.000"}
+    ],
+    M: [
+      {name: "Miss Dior – Dior", type: "Wanita", desc: "Aroma floral chypre dengan kombinasi rose, patchouli, dan musk, memberikan kesan romantis dan klasik.", img: "https://i.pinimg.com/736x/02/d9/93/02d99382b94b14078b79b35b1e112b44.jpg", price: "Rp 1.600.000"},
+      {name: "Montblanc Explorer – Montblanc", type: "Pria", desc: "Aroma fougère dengan sentuhan lavender, pineapple, dan oakmoss, menciptakan kesan maskulin dan percaya diri.", img: "https://i.pinimg.com/736x/9c/86/ca/9c86ca48843f4cc4c4865b02daae1727.jpg", price: "Rp 1.300.000"}
+    ],
+    N: [
+      {name: "Narciso Rodriguez For Her – Narciso Rodriguez", type: "Wanita", desc: "Aroma musky floral dengan kombinasi orange blossom dan amber, memberikan kesan sensual dan elegan.", img: "https://i.pinimg.com/736x/58/d7/60/58d760ce585b0baa652fc7deef89f0ae.jpg", price: "Rp 1.450.000"},
+      {name: "Nautica Voyage – Nautica", type: "Pria", desc: "Aroma aquatic dengan sentuhan apple dan green leaves, menciptakan kesan segar dan sporty.", img: "https://i.pinimg.com/736x/e1/f8/c7/e1f8c7f45130b2d3619bc7bd5d851bba.jpg", price: "Rp 1.100.000"}
+    ],
+    O: [
+      {name: "Olympea – Paco Rabanne", type: "Wanita", desc: "Aroma floral woody dengan kombinasi bamboo dan lotus, memberikan kesan ringan dan elegan.", img: "https://i.pinimg.com/736x/bf/2c/6c/bf2c6c7f9c056507d4fd4cfad7527563.jpg", price: "Rp 1.400.000"},
+      {name: "One Million – Paco Rabanne", type: "Pria", desc: "Aroma spicy leather dengan sentuhan cinnamon dan amber, menciptakan kesan mewah dan berani.", img: "https://i.pinimg.com/736x/22/e6/63/22e663f430c994c90e41153ceb42c4cb.jpg", price: "Rp 1.550.000"}
+    ],
+    P: [
+      {name: "Poison Girl – Dior", type: "Wanita", desc: "Aroma floral dengan kombinasi lily dan peony, memberikan kesan segar dan feminin.", img: "https://i.pinimg.com/736x/11/9a/9b/119a9bb430d5cfeb45e5e1892112f110.jpg", price: "Rp 1.700.000"},
+      {name: "Pure XS – Paco Rabanne", type: "Pria", desc: "Aroma aquatic dengan sentuhan melon dan basil, menciptakan kesan segar dan energik.", img: "https://i.pinimg.com/736x/f3/60/47/f36047b1c38c7d46ddd99e7d80ff7774.jpg", price: "Rp 1.400.000"}
+    ],
+    Q: [
+      {name: "Queen of Seduction – Antonio Banderas", type: "Wanita", desc: "Aroma aquatic floral dengan kombinasi grapefruit dan jasmine, memberikan kesan segar dan menggoda.", img: "https://i.pinimg.com/736x/78/d0/82/78d082305c49ddbda9ecaba221e024a0.jpg", price: "Rp 650.000"},
+      {name: "Quasar – O Boticário", type: "Pria", desc: "Aroma woody spicy dengan sentuhan leather dan tobacco, menciptakan kesan klasik dan maskulin.", img: "https://i.pinimg.com/736x/5c/75/95/5c7595eb18a382943739fc858703bc2a.jpg", price: "Rp 700.000"}
+    ],
+    R: [
+      {name: "Romance – Ralph Lauren", type: "Wanita", desc: "Aroma floral dengan kombinasi rose dan ginger, memberikan kesan romantis dan segar.", img: "https://i.pinimg.com/736x/e3/f1/88/e3f1889f8bbbeef78b3e7819f35aa2e6.jpg", price: "Rp 1.550.000"},
+      {name: "Rochas Man – Rochas", type: "Pria", desc: "Aroma gourmand dengan sentuhan coffee dan vanilla, menciptakan kesan manis dan maskulin.", img: "https://i.pinimg.com/736x/68/a3/b2/68a3b22a1257c5a18d877e98586a7dbf.jpg", price: "Rp 1.200.000"}
+    ],
+    S: [
+      {name: "Scandal – Jean Paul Gaultier", type: "Wanita", desc: "Aroma sweet chypre dengan kombinasi madu, gardenia, dan patchouli, menciptakan kesan sensual dan berani.", img: "https://i.pinimg.com/736x/6a/61/5b/6a615bb430b5b17c6f778cd5589b4f23.jpg", price: "Rp 1.650.000"},
+      {name: "Stronger With You – Emporio Armani", type: "Pria", desc: "Aroma manis dan hangat dengan kombinasi chestnut, vanilla, dan sage, memberikan kesan romantis dan maskulin.", img: "https://i.pinimg.com/736x/49/54/ab/4954ab40d29025d72fd883b4c5b779db.jpg", price: "Rp 1.845.000"}
+    ],
+    T: [
+      {name: "Tiffany & Co. – Eau de Parfum", type: "Wanita", desc: "Aroma oriental floral dengan kombinasi peach dan rose, memberikan kesan hangat dan romantis.", img: "https://i.pinimg.com/736x/ba/35/e4/ba35e4d278d75e53227701d887a9de0a.jpg", price: "Rp 2.000.000"},
+      {name: "Terre d’Hermès – Hermès", type: "Pria", desc: "Aroma woody spicy dengan sentuhan orange dan vetiver, menciptakan kesan elegan dan maskulin.", img: "https://i.pinimg.com/736x/62/96/b4/6296b41335da127ee7363f6556effe72.jpg", price: "Rp 2.250.000"}
+    ],
+    U: [
+      {name: "Un Jardin Sur Le Nil – Hermès", type: "Wanita", desc: "Aroma segar dan ringan dengan kombinasi mangga hijau, lotus, dan grapefruit, memberikan kesan alami dan elegan.", img: "https://i.pinimg.com/736x/6a/2a/8f/6a2a8f52e18bb651b6fc96a8a2cbc00c.jpg", price: "Rp 2.100.000"},
+      {name: "Uomo – Salvatore Ferragamo", type: "Pria", desc: "Aroma oriental woody dengan sentuhan tiramisu, tonka bean, dan sandalwood, menciptakan kesan manis dan maskulin.", img: "https://i.pinimg.com/736x/43/5d/8a/435d8af63e2cd2686bf2886091df9e8b.jpg", price: "Rp 1.500.000"}
+    ],
+    V: [
+      {name: "Versace Bright Crystal – Versace", type: "Wanita", desc: "Aroma floral fruity dengan kombinasi yuzu, pomegranate, dan peony, memberikan kesan segar dan feminin.", img: "https://i.pinimg.com/736x/6e/79/01/6e7901a5b7c8ef1406805aec5eb338b4.jpg", price: "Rp 1.350.000"},
+      {name: "Valentino Uomo – Valentino", type: "Pria", desc: "Aroma gourmand dengan sentuhan hazelnut, chocolate, dan leather, menciptakan kesan mewah dan elegan.", img: "https://i.pinimg.com/736x/c8/70/c8/c870c80c7b3897f6d8fe4af3dee2bb2c.jpg", price: "Rp 2.100.000"}
+    ],
+    W: [
+      {name: "Wonderlust – Michael Kors", type: "Wanita", desc: "Aroma segar dan feminin dengan sentuhan bunga dan buah, menciptakan kesan petualangan dan kebebasan.", img: "https://i.pinimg.com/736x/eb/58/18/eb5818e5460ecf574cf09e4bc374362b.jpg", price: "Rp 1.600.000"},
+      {name: "Wanted – Azzaro", type: "Pria", desc: "Aroma maskulin yang kuat dengan campuran rempah dan kayu, memberikan kesan percaya diri dan berani.", img: "https://i.pinimg.com/736x/c2/5c/f1/c25cf1ff08b02d505d5aea989aa714ad.jpg", price: "Rp 1.400.000"}
+    ],
+    X: [
+      {name: "X Feminine – Clive Christian", type: "Wanita", desc: "Aroma mewah dan elegan dengan kombinasi bunga dan rempah, menciptakan kesan feminin dan eksklusif.", img: "https://i.pinimg.com/736x/41/ff/25/41ff25a108bb1d0ea191e16824a46bbd.jpg", price: "Rp 6.500.000"},
+      {name: "X Masculine – Clive Christian", type: "Pria", desc: "Aroma maskulin yang intens dengan sentuhan kayu dan rempah, memberikan kesan kuat dan berkelas.", img: "https://i.pinimg.com/736x/f6/41/db/f641dba6cd5e04b72ffd855b062c2a50.jpg", price: "Rp 6.500.000"}
+    ],
+    Y: [
+      {name: "Yves Saint Laurent Libre – YSL", type: "Wanita", desc: "Aroma modern dan berani dengan kombinasi lavender dan vanila, menciptakan kesan feminin dan kuat.", img: "https://i.pinimg.com/736x/ea/36/e7/ea36e7700f9d32ec0771b3460cc0c956.jpg", price: "Rp 2.000.000"},
+      {name: "Y Eau de Parfum – YSL", type: "Pria", desc: "Aroma segar dan maskulin dengan campuran jeruk dan kayu, memberikan kesan energik dan percaya diri.", img: "https://i.pinimg.com/736x/89/ea/11/89ea111e0a5c37c9798f6c6158e49eb4.jpg", price: "Rp 1.950.000"}
+    ],
+    Z: [
+      {name: "Z Woman – Zara", type: "Wanita", desc: "Aroma floral dan segar dengan sentuhan buah dan musk, menciptakan kesan feminin dan elegan.", img: "https://i.pinimg.com/736x/a3/1f/e8/a31fe8386121e3b7b075c71eac6027ff.jpg", price: "Rp 450.000"},
+      {name: "Z Zegna – Ermenegildo Zegna", type: "Pria", desc: "Aroma maskulin yang halus dengan kombinasi kayu dan rempah, memberikan kesan elegan dan modern.", img: "https://i.pinimg.com/736x/1e/52/d8/1e52d847569405976a2fded44579bed7.jpg", price: "Rp 1.200.000"}
+    ],
+    Unisex: [
+      {name: "Diptyque Do Son – Eau De Parfum", type: "Unisex", desc: "Aroma floral segar dengan sentuhan melati dan jeruk, memberikan kesan elegan dan ringan.", img: "https://i.pinimg.com/736x/2b/11/18/2b1118591c668bad8f9ba424e20fe416.jpg", price: "Rp 2.400.000"},
+      {name: "Zimaya Tiramisu Caramel – EDP", type: "Unisex", desc: "Aroma manis dan gourmand dengan sentuhan tiramisu dan karamel, menciptakan kesan hangat dan menggoda.", img: "https://i.pinimg.com/736x/8b/46/a5/8b46a590bbcbc45f094fda17c52cc95b.jpg", price: "Rp 2.500.000"}
+    ],
+    Eksklusif: [
+      {name: "Clive Christian No. 1", type: "Eksklusif", desc: "Aroma mewah dan kompleks dengan campuran bunga dan rempah, memberikan kesan elegan dan eksklusif.", img: "https://i.pinimg.com/736x/41/2b/99/412b9915ca223f100578401524f3a91f.jpg", price: "Rp 15.000.000"},
+      {name: "Amouage Reflection Man", type: "Eksklusif", desc: "Aroma woody floral dengan sentuhan melati dan kayu cendana, menciptakan kesan maskulin dan berkelas.", img: "https://i.pinimg.com/736x/61/c1/0e/61c10e13b8895af2a9cd5e1499795528.jpg", price: "Rp 12.000.000"}
+    ]
+  };
+
+  // Function to create product card HTML
+  function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.tabIndex = 0; // Make focusable for accessibility
+
+    // Add id attribute for anchor navigation based on product name
+    const id = product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    card.id = id;
+
+    const img = document.createElement('img');
+    img.src = product.img;
+    img.alt = product.name;
+    img.className = 'product-image';
+    card.appendChild(img);
+
+    // Add price caption below image
+    const price = document.createElement('div');
+    price.className = 'product-price';
+    price.textContent = product.price ? product.price : '';
+    card.appendChild(price);
+
+    // Add "Tambah ke Keranjang" button
+    const addToCartBtn = document.createElement('button');
+    addToCartBtn.className = 'buy-button';
+    addToCartBtn.textContent = 'Tambah ke Keranjang';
+    addToCartBtn.onclick = () => {
+      addToCart(product);
+    };
+    card.appendChild(addToCartBtn);
+
+    // Add "Checkout Sekarang" button
+    const checkoutBtn = document.createElement('button');
+    checkoutBtn.className = 'buy-button';
+    checkoutBtn.textContent = 'Checkout Sekarang';
+    checkoutBtn.style.marginTop = '8px';
+    checkoutBtn.onclick = () => {
+      checkoutNow(product);
+    };
+    card.appendChild(checkoutBtn);
+
+    const name = document.createElement('div');
+    name.className = 'product-name produk-nama';
+    name.textContent = product.name;
+    card.appendChild(name);
+
+    const type = document.createElement('div');
+    type.className = 'product-type';
+    type.textContent = product.type;
+    card.appendChild(type);
+
+    const desc = document.createElement('div');
+    desc.className = 'product-desc';
+    desc.textContent = product.desc;
+    card.appendChild(desc);
+
+    const button = document.createElement('button');
+    button.className = 'buy-button';
+    button.textContent = 'Lihat Detail';
+    button.onclick = () => {
+      // Redirect to lihatdetail.html with product name as URL parameter
+      const productParam = product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      window.location.href = `lihatdetail.html?product=${productParam}`;
+    };
+    card.appendChild(button);
+
+    return card;
+  }
+
+  // Function to add product to cart in localStorage
+  function addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Check if product already in cart
+    const exists = cart.find(item => item.name === product.name);
+    if (!exists) {
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${product.name} berhasil ditambahkan ke keranjang.`);
+    } else {
+      alert(`${product.name} sudah ada di keranjang.`);
+    }
+  }
+
+  // Function to checkout now with selected product
+  function checkoutNow(product) {
+    // Save selected product to localStorage for checkout
+    localStorage.setItem('checkoutProduct', JSON.stringify(product));
+    // Redirect to checkout page
+    window.location.href = 'checkout.html';
+  }
+
+  // Function to create letter section with 2 products
+  function createLetterSection(letter, products) {
+    const section = document.createElement('section');
+    section.className = 'letter-section';
+    section.id = `letter-${letter}`;
+
+    const title = document.createElement('h2');
+    title.className = 'letter-title';
+
+    const flower = document.createElement('span');
+    flower.className = 'flower-icon';
+    title.appendChild(flower);
+
+    const titleText = document.createTextNode(` ${letter}`);
+    title.appendChild(titleText);
+
+    section.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'product-grid';
+
+    products.forEach(product => {
+      const card = createProductCard(product);
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+
+    return section;
+  }
+
+  // Insert all letter sections into productContainer
+  const productContainer = document.getElementById('productContainer');
+  Object.keys(products).forEach(letter => {
+    // Skip Unisex and Eksklusif here, handled separately
+    if (letter === 'Unisex' || letter === 'Eksklusif') return;
+    const section = createLetterSection(letter, products[letter]);
+    productContainer.appendChild(section);
+  });
+
+  // Add Unisex and Eksklusif products to their respective grids
+  const unisexGrid = document.getElementById('unisexGrid');
+  const eksklusifGrid = document.getElementById('eksklusifGrid');
+
+  if (products.Unisex) {
+    products.Unisex.forEach(product => {
+      const card = createProductCard(product);
+      unisexGrid.appendChild(card);
+    });
+  }
+
+  if (products.Eksklusif) {
+    products.Eksklusif.forEach(product => {
+      const card = createProductCard(product);
+      eksklusifGrid.appendChild(card);
+    });
+  }
+
+  // Fade-in animation on scroll for letter sections
+  function onScrollFadeIn() {
+    const sections = document.querySelectorAll('.letter-section');
+    const triggerBottom = window.innerHeight * 0.85;
+
+    sections.forEach(section => {
+      const sectionTop = section.getBoundingClientRect().top;
+      if (sectionTop < triggerBottom) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', onScrollFadeIn);
+  window.addEventListener('load', onScrollFadeIn);
+
+  // Search input and suggestions (reuse from beranda)
+  const perfumes = [
+     "Acqua di Giò Profumo – Giorgio Armani",
+    "Amouage Reflection Man",
+    "Angel – Mugler",
+    "Black Opium – Yves Saint Laurent",
+    "Bleu de Chanel – Chanel",
+    "Clive Christian No. 1",
+    "Creed Aventus – Creed",
+    "Chanel No. 5 – Chanel",
+    "Diptyque Do Son – Eau De Parfum",
+    "Dior Sauvage – Dior",
+    "Daisy – Marc Jacobs",
+    "Eros – Versace",
+    "Eros – Versace",
+    "Fahrenheit – Dior",
+    "Flowerbomb – Viktor & Rolf",
+    "Gucci Bloom – Gucci",
+    "Gentleman – Givenchy",
+    "Hypnotic Poison – Dior",
+    "Hugo Man – Hugo Boss",
+    "Idôle – Lancôme",
+    "Invictus – Paco Rabanne",
+    "J'adore – Dior",
+    "Joop! Homme – Joop!",
+    "Kenzo Flower – Kenzo",
+    "K by Dolce & Gabbana – Dolce & Gabbana",
+    "La Vie Est Belle – Lancôme",
+    "Le Male – Jean Paul Gaultier",
+    "Miss Dior – Dior",
+    "Montblanc Explorer – Montblanc",
+    "Narciso Rodriguez For Her – Narciso Rodriguez",
+    "Nautica Voyage – Nautica",
+    "Olympea – Paco Rabanne",
+    "One Million – Paco Rabanne",
+    "Poison Girl – Dior",
+    "Pure XS – Paco Rabanne",
+    "Queen of Seduction – Antonio Banderas",
+    "Quasar – O Boticário",
+    "Romance – Ralph Lauren",
+    "Rochas Man – Rochas",
+    "Scandal – Jean Paul Gaultier",
+    "Stronger With You – Emporio Armani",
+    "Tiffany & Co. – Eau de Parfum",
+    "Terre d’Hermès – Hermès",
+    "Un Jardin Sur Le Nil – Hermès",
+    "Uomo – Salvatore Ferragamo",
+    "Versace Bright Crystal – Versace",
+    "Valentino Uomo – Valentino",
+    "Wonderlust – Michael Kors",
+    "Wanted – Azzaro",
+    "X Feminine – Clive Christian",
+    "X Masculine – Clive Christian",
+    "Yves Saint Laurent Libre – YSL",
+    "Y Eau de Parfum – YSL",
+    "Zimaya Tiramisu Caramel – EDP",
+    "Z Woman – Zara",
+    "Z Zegna – Ermenegildo Zegna"
+  ];
+  const searchInput = document.getElementById('searchInput');
+  const suggestions = document.getElementById('suggestions');
+
+  // Filter products by search query
+  function filterProducts(query) {
+    const lowerQuery = query.toLowerCase();
+    const allCards = document.querySelectorAll('.product-card');
+    allCards.forEach(card => {
+      const productName = card.querySelector('.product-name').textContent.toLowerCase();
+      if (productName.includes(lowerQuery)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Show suggestions and filter on input
+  searchInput.addEventListener('input', function() {
+    const input = this.value.toLowerCase();
+    suggestions.innerHTML = '';
+    if (input.length === 0) {
+      filterProducts('');
+      return;
+    }
+    const filtered = perfumes.filter(p => p.toLowerCase().includes(input));
+    filtered.forEach(item => {
+      const div = document.createElement('div');
+      div.textContent = item;
+      div.onclick = function() {
+        searchInput.value = item;
+        suggestions.innerHTML = '';
+        filterProducts(item);
+      };
+      suggestions.appendChild(div);
+    });
+    filterProducts(input);
+  });
+
+  // On form submit, scroll to matched product if found
+  const searchForm = document.getElementById('searchForm');
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) {
+      filterProducts('');
+      return;
+    }
+    filterProducts(query);
+    const productNames = document.querySelectorAll('.produk-nama');
+    let matchedElement = null;
+    productNames.forEach(el => {
+      if (el.textContent.toLowerCase() === query) {
+        matchedElement = el;
+      }
+    });
+    if (matchedElement) {
+      const productCard = matchedElement.closest('.product-card');
+      if (productCard) {
+        productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        productCard.style.transition = 'background-color 0.5s ease';
+        productCard.style.backgroundColor = '#ffc0cb'; // soft pink highlight color
+        setTimeout(() => {
+          productCard.style.backgroundColor = '';
+        }, 3000);
+      }
+    } else {
+      alert('Produk tidak ditemukan.');
+    }
+  });
+
+  // Close suggestions if clicked outside
+  document.addEventListener('click', function(e) {
+    if (e.target !== searchInput) {
+      suggestions.innerHTML = '';
+    }
+  });
+
+  // Function to get URL parameter by name
+  function getURLParameter(name) {
+    return new URLSearchParams(window.location.search).get(name);
+  }
+
+window.addEventListener('load', () => {
+  // Helper function to get URL parameter by name
+  function getURLParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  // Get search query from URL parameter
+  const searchQuery = getURLParameter('search');
+  // Get highlight flag from URL parameter
+  const highlight = getURLParameter('highlight') === 'true';
+
+  if (searchQuery) {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+    const productNames = document.querySelectorAll('.produk-nama');
+    let matchedElement = null;
+    function normalize(str) {
+      return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    }
+    const normalizedQuery = normalize(searchQuery);
+    productNames.forEach(el => {
+      if (normalize(el.textContent) === normalizedQuery) {
+        matchedElement = el;
+      }
+    });
+    if (matchedElement) {
+      const productCard = matchedElement.closest('.product-card');
+      if (productCard) {
+        if (highlight) {
+          // Scroll to product and highlight with pink soft box
+          productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          productCard.style.transition = 'background-color 0.5s ease';
+          productCard.style.backgroundColor = '#ffc0cb'; // soft pink highlight color
+          setTimeout(() => {
+            productCard.style.backgroundColor = '';
+          }, 3000);
+        } else {
+          // Just highlight without scrolling
+          productCard.style.transition = 'background-color 0.5s ease';
+          productCard.style.backgroundColor = '#ffc0cb'; // soft pink highlight color
+          setTimeout(() => {
+            productCard.style.backgroundColor = '';
+          }, 3000);
+        }
+      }
+    } else {
+      // Show "Produk tidak ditemukan." message
+      const mainDiv = document.querySelector('.main');
+      let notFoundMsg = document.getElementById('notFoundMessage');
+      if (!notFoundMsg) {
+        notFoundMsg = document.createElement('div');
+        notFoundMsg.id = 'notFoundMessage';
+        notFoundMsg.style.color = '#b35c7e';
+        notFoundMsg.style.fontWeight = '700';
+        notFoundMsg.style.fontSize = '18px';
+        notFoundMsg.style.marginTop = '20px';
+        notFoundMsg.textContent = 'Produk tidak ditemukan.';
+        mainDiv.appendChild(notFoundMsg);
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Toko Parfum</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4e1d2;
+      color: #5a3e3a;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 24px;
+      color: #7a4f4a;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      padding: 10px 12px;
+      border: 2px solid #d8a6b8;
+      border-radius: 6px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      border-color: #c48ca3;
+    }
+    button {
+      background-color: #d8a6b8;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c48ca3;
+    }
+    .register-link {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #7a4f4a;
+    }
+    .register-link a {
+      color: #d8a6b8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="loginForm" action="#" method="post">
+      <input type="text" name="username" placeholder="Nama Pengguna atau Email" required />
+      <input type="password" name="password" placeholder="Kata Sandi" required />
+      <button type="submit">Masuk</button>
+    </form>
+    <div class="register-link">
+      Belum punya akun? <a href="daftar.html">Daftar di sini</a>
+    </div>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const usernameOrEmail = this.username.value.trim();
+        const password = this.password.value;
+        const users = JSON.parse(localStorage.getItem('users') || '{}');
+        let loggedInUser = null;
+        for (const username in users) {
+          const user = users[username];
+          if ((user.username === usernameOrEmail || user.email === usernameOrEmail) && user.password === password) {
+            loggedInUser = username;
+            break;
+          }
+        }
+        if (loggedInUser) {
+          localStorage.setItem('loggedInUser', loggedInUser);
+          alert('Login berhasil!');
+          // Check if user profile is complete (fullName)
+          const users = JSON.parse(localStorage.getItem('users') || '{}');
+          const user = users[loggedInUser];
+          if (!user.fullName) {
+            window.location.href = 'profilsaya.html';
+          } else {
+            // Redirect to last visited page or koleksi.html
+            const lastPage = sessionStorage.getItem('lastPage') || 'koleksi.html';
+            window.location.href = lastPage;
+          }
+        } else {
+          alert('Nama pengguna/email atau kata sandi salah.');
+        }
+      });
+    </script>
+</body>
+</html>
