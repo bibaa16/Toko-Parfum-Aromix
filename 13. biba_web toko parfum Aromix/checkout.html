@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - Toko Parfum Elegan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+    .header {
+      background-color: #bfa5a0;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+    }
+    .navbar {
+      overflow: hidden;
+      background-color: #7a4f4a;
+    }
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    .navbar a:hover {
+      background-color: #a07f7a;
+    }
+    .main {
+      max-width: 800px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+    }
+    h2 {
+      text-align: center;
+      color: #5a3e3a;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .submit-btn {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background-color: #bfa5a0;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .submit-btn:hover {
+      background-color: #a07f7a;
+    }
+    .footer {
+      background-color: #7a4f4a;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+    /* Promo popup styles */
+    #promoPopup {
+      display: none;
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -40%);
+      background-color: #d46a8a;
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    #promoPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: white;
+      color: #d46a8a;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  Toko Parfum Aromix
+</div>
+
+<div class="navbar">
+  <a href="index.html">Beranda</a>
+  <a href="koleksi.html">Koleksi</a>
+  <a href="tentang.html">Tentang</a>
+  <a href="keranjang.html">Keranjang</a>
+  <a href="checkout.html">Checkout</a>
+</div>
+
+<div class="main">
+  <h2>Checkout</h2>
+  <div id="checkoutProductInfo" style="margin-bottom: 20px; padding: 15px; background-color: #f4e1d2; border-radius: 8px; color: #5a3e3a;">
+    <!-- Product info will be displayed here -->
+  </div>
+  <form id="checkoutForm">
+    <label for="nama">Nama Lengkap</label>
+    <input type="text" id="nama" name="nama" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="alamat">Alamat Pengiriman</label>
+    <textarea id="alamat" name="alamat" rows="4" required></textarea>
+
+    <label for="metode">Metode Pembayaran</label>
+    <select id="metode" name="metode" required>
+      <option value="">-- Pilih Metode Pembayaran --</option>
+      <option value="ovo">OVO</option>
+      <option value="gopay">GoPay</option>
+      <option value="dana">Dana</option>
+      <option value="qris">QRIS</option>
+      <option value="transfer">Transfer Bank</option>
+      <option value="cod">Cash on Delivery</option>
+      <option value="lainnya">Pembayaran Lainnya</option>
+    </select>
+
+    <button type="submit" class="submit-btn">Selesaikan Pesanan</button>
+  </form>
+</div>
+
+<div id="promoPopup">
+  <h3>Promo Spesial Hari Ini!</h3>
+  <p>Dapatkan diskon 25% untuk pembelian pertama Anda<br></p>
+  <button id="closePromoBtn">Tutup Promo</button>
+</div>
+
+<!-- Popup Hasil Checkout -->
+<div id="orderResultPopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+     background-color: #ffe6f0; border: 1px solid #d291bc; padding: 20px; border-radius: 10px; width: 90%;
+     max-width: 400px; box-shadow: 0 4px 10px rgba(210, 145, 188, 0.5); z-index: 1000;">
+  <div id="orderResultContent" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; color: #6a1b4d;"></div>
+  <button onclick="document.getElementById('orderResultPopup').style.display='none'" 
+    style="margin-top: 15px; padding: 8px 16px; background-color: #d291bc; color: white;
+    border: none; border-radius: 5px; cursor: pointer;">
+    Tutup
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const productInfoDiv = document.getElementById('checkoutProductInfo');
+    const checkoutProduct = JSON.parse(localStorage.getItem('checkoutProduct'));
+    const promoPopup = document.getElementById('promoPopup');
+    const closePromoBtn = document.getElementById('closePromoBtn');
+    const checkoutForm = document.getElementById('checkoutForm');
+
+    // Show product info
+     function parsePrice(priceStr) {
+      return Number(priceStr.replace(/[^0-9]/g, ''));
+    }
+
+    function formatPrice(num) {
+      return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Show product info
+    if (checkoutProduct) {
+      productInfoDiv.innerHTML = `
+        <strong>Produk yang akan dibeli:</strong><br/>
+        Nama: ${checkoutProduct.name}<br/>
+        Harga: ${formatPrice(parsePrice(checkoutProduct.price))}
+      `;
+    } else {
+      productInfoDiv.innerHTML = '<em>Tidak ada produk yang dipilih untuk checkout.</em>';
+    }
+
+    // Check if user is logged in and promo used
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    let userData = loggedInUser ? users[loggedInUser] : null;
+
+    // Function to parse price string like "Rp 1.100.000" to number 1100000
+    function parsePrice(priceStr) {
+      return Number(priceStr.replace(/[^0-9]/g, ''));
+    }
+
+    // Function to format number to price string "Rp 1.100.000"
+    function formatPrice(num) {
+      return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Show promo popup if user is logged in and hasn't used promo
+    if (userData && !userData.usedPromo) {
+      promoPopup.innerHTML = `
+        <div style="
+          padding: 20px;
+          background-color: #f0fff0;
+          border: 1px solid #8bc34a;
+          border-radius: 8px;
+        ">
+          <h3 style="color: #4caf50;">🎁 Promo Spesial untuk Kamu!</h3>
+          <p>
+            Selamat datang di <strong>Aromix</strong>! Untuk
+            <strong>pembelian pertama</strong> kamu, nikmati
+            <strong>diskon 25%</strong> langsung dari total belanja kamu.
+          </p>
+          <p>
+            <em>Jika total belanja setelah diskon melebihi Rp 1.500.000,
+            kamu juga akan mendapatkan <strong>gratis ongkir</strong>!</em>
+          </p>
+          <p style="margin-top: 10px;">
+            Promo ini hanya berlaku <strong>satu kali</strong> untuk setiap akun.
+          </p>
+          <button id="dynamicClosePromoBtn" style="
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          ">
+            Tutup
+          </button>
+        </div>
+      `;
+
+      // Tampilkan popup
+      promoPopup.style.display = 'block';
+
+      // Tambahkan event listener setelah tombol "Tutup" dimasukkan ke DOM
+      setTimeout(() => {
+        const dynamicClosePromoBtn = document.getElementById('dynamicClosePromoBtn');
+        if (dynamicClosePromoBtn) {
+          dynamicClosePromoBtn.addEventListener('click', () => {
+            promoPopup.style.display = 'none';
+          });
+        }
+      }, 0);
+    } else {
+      // Close promo popup button
+      closePromoBtn.addEventListener('click', () => {
+        promoPopup.style.display = 'none';
+      });
+    }
+
+    // Handle checkout form submission
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!checkoutProduct) {
+        alert('Tidak ada produk untuk checkout.');
+        return;
+      }
+
+      let originalPrice = parsePrice(checkoutProduct.price);
+
+      // Validate price
+      if (isNaN(originalPrice) || originalPrice <= 0) {
+        alert('Harga produk tidak valid.');
+        return;
+      }
+
+      // Confirm before checkout
+      if (!confirm('Apakah Anda yakin ingin menyelesaikan checkout ini?')) {
+        return;
+      }
+
+      let finalPrice = originalPrice;
+      let freeShipping = false;
+
+      // Apply promo if eligible
+      if (userData && !userData.usedPromo) {
+        finalPrice = Math.floor(originalPrice * 0.75); // 25% discount
+        // Check if final price > 1.5 million for free shipping
+        if (finalPrice > 1500000) {
+          freeShipping = true;
+        }
+      }
+
+      // Show final price and shipping info
+      let message = "🎉 Pesanan berhasil diselesaikan!\\n";
+      message += `Harga Asli: ${formatPrice(originalPrice)}\\n`;
+
+      if (userData && !userData.usedPromo) {
+        message += `Diskon 25%: -${formatPrice(originalPrice - finalPrice)}\\n`;
+        message += `Harga Setelah Diskon: ${formatPrice(finalPrice)}\\n`;
+        message += "(Promo hanya berlaku untuk pembelian pertama)\\n";
+      } else {
+        message += "Harga Promo: Tidak tersedia (sudah pernah digunakan)\\n";
+        message += `Total Pembayaran: ${formatPrice(finalPrice)}\\n`;
+      }
+
+      if (freeShipping) {
+        message += "✅ Anda mendapatkan GRATIS ONGKIR!";
+      } else {
+        message += "❗ Biaya ongkir akan dikenakan sesuai metode pengiriman.";
+      }
+
+      // Buat isi konten popup
+      let popupHTML = `
+        <h3 style="color: #fa8c16;">🎉 Pesanan Berhasil!</h3>
+        <p><strong>Harga Asli:</strong> ${formatPrice(originalPrice)}</p>
+      `;
+
+      if (userData && !userData.usedPromo) {
+        popupHTML += `
+          <p><strong>Diskon 25%:</strong> -${formatPrice(originalPrice - finalPrice)}</p>
+          <p><strong>Harga Setelah Diskon:</strong> ${formatPrice(finalPrice)}</p>
+          <p style="color: #888;"><em>(Promo hanya berlaku untuk pembelian pertama)</em></p>
+        `;
+      } else {
+        popupHTML += `
+          <p><strong>Harga Promo:</strong> <em>Tidak tersedia (sudah pernah digunakan)</em></p>
+          <p><strong>Total Pembayaran:</strong> ${formatPrice(finalPrice)}</p>
+        `;
+      }
+
+      popupHTML += `
+        <p>${freeShipping
+          ? "✅ <strong>Gratis Ongkir</strong> didapatkan karena total belanja memenuhi syarat!"
+          : "❗ Biaya ongkir akan dikenakan sesuai metode pengiriman."}
+        </p>
+      `;
+
+      // Tampilkan ke popup
+      const orderResultContent = document.getElementById('orderResultContent');
+      orderResultContent.innerHTML = popupHTML;
+      document.getElementById('orderResultPopup').style.display = 'block';
+
+      // Mark promo as used for user
+      if (userData && !userData.usedPromo) {
+        userData.usedPromo = true;
+        users[loggedInUser] = userData;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+
+      // Clear cart and checkout product
+      localStorage.removeItem('checkoutProduct');
+      localStorage.removeItem('cart');
+
+      // Hide promo popup after purchase
+      promoPopup.style.display = 'none';
+
+      // Redirect to homepage with delay
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 10000);
+    });
+  });
+</script>
+</body>
+</html>

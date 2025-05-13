@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detail Produk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      background-image: url('https://i.pinimg.com/736x/6e/32/ca/6e32ca7ef5ea6013e12c7a11ca307f1a.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #5a3e3a;
+    }
+    .overlay {
+      background-color: rgba(244, 225, 210, 0.9);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      max-width: 900px;
+      background-color: #fff8f9;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+    }
+    h1 {
+      color: #7a4f4a;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 1.5px;
+    }
+    .product-image {
+      display: block;
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 30px auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .product-info {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .product-info strong {
+      color: #b35c7e;
+    }
+    .back-button {
+      display: inline-block;
+      background-color: #d8a6b8;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+      margin: 0 auto;
+      display: block;
+      width: 200px;
+    }
+    .back-button:hover {
+      background-color: #c48ca3;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .overlay {
+        padding: 20px 10px;
+      }
+      .container {
+        padding: 20px 20px;
+        max-width: 100%;
+        border-radius: 10px;
+      }
+      .product-image {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+      .product-info {
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      .back-button {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 24px;
+        letter-spacing: 1px;
+      }
+      .product-info {
+        font-size: 14px;
+      }
+      .back-button {
+        font-size: 16px;
+        padding: 12px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container" id="productDetail">
+      <h1 id="productName">Loading...</h1>
+     <img src="" alt="" class="product-image" id="productImage" />
+<p id="productPriceDisplay" style="text-align: center; font-size: 20px; font-weight: bold; color: #b35c7e; margin-top: 10px; margin-bottom: 30px;"></p>
+  <div class="product-info" id="productInfo">
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="addToCart()" style="padding: 12px 24px; background-color: #b35c7e; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 15px;">Tambah ke Keranjang</button>
+      <button onclick="checkoutNow()" style="padding: 12px 24px; background-color: #a07f7a; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 15px;">Checkout Sekarang</button>
+    </div>
+    <p><strong>Kategori:</strong> <span id="productCategory"></span></p>
+    <p><strong>Volume:</strong> <span id="productVolume"></span></p>
+    <p><strong>Ketahanan Aroma:</strong> <span id="productDuration"></span></p>
+    <p><strong>Harga:</strong> <span id="productPrice"></span></p>
+    <p><strong>Deskripsi Produk:</strong></p>
+    <p id="productDescription"></p>
+  </div>
+      <a href="koleksi.html" class="back-button">Kembali ke Koleksi</a>
+    </div>
+  </div>
+
+  <script>
+    // Product data for all products in the collection with expanded descriptions
+    const products = {
+      A: [
+        {name: "Acqua di Giò Profumo – Giorgio Armani", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.200.000", desc: "Acqua di Giò Profumo adalah parfum yang memadukan aroma laut segar dengan sentuhan patchouli dan dupa. Aroma ini menciptakan kesan maskulin dan elegan yang tahan lama. Cocok untuk pria yang ingin tampil percaya diri dan berkelas. Parfum ini sangat ideal untuk acara formal maupun santai. Botolnya yang elegan juga menambah nilai estetika produk ini." , img: "https://i.pinimg.com/736x/a4/13/95/a4139561ff083565772a4cc138aee5ea.jpg"},
+        {name: "Angel – Mugler", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.100.000", desc: "Angel adalah parfum gourmand pertama yang memadukan aroma praline, vanila, dan patchouli. Aroma manis dan sensual ini sangat memikat dan cocok untuk wanita yang ingin tampil menawan. Parfum ini memberikan kesan hangat dan menggoda sepanjang hari. Desain botolnya unik dan ikonik, menambah daya tarik produk ini. Sangat cocok untuk acara malam dan spesial." , img: "https://i.pinimg.com/736x/30/8d/41/308d417eff815899260bda0396a478bf.jpg"}
+      ],
+      B: [
+        {name: "Black Opium – Yves Saint Laurent", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.000.000", desc: "Black Opium adalah parfum dengan kombinasi kopi, vanila, dan bunga putih yang menciptakan aroma manis dan menggoda. Parfum ini memberikan kesan energik dan penuh semangat. Cocok untuk wanita yang ingin tampil percaya diri dan berani. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara khusus. Botol hitam berkilau menambah kesan misterius dan elegan." , img: "https://i.pinimg.com/736x/65/a7/62/65a7629156c130b10a219db87ea54965.jpg"},
+        {name: "Bleu de Chanel – Chanel", type: "Pria", volume: "100ml", duration: "Tahan hingga 9 jam", price: "Rp 1.300.000", desc: "Bleu de Chanel adalah parfum dengan aroma citrus dan woody yang segar dan elegan. Parfum ini cocok untuk pria yang percaya diri dan modern. Aroma tahan lama memberikan kesan maskulin yang kuat. Sangat ideal untuk penggunaan sehari-hari maupun acara formal. Desain botol yang sederhana namun mewah menambah daya tarik produk ini." , img: "https://i.pinimg.com/736x/0f/02/e1/0f02e1774a0ab058c376cf33b4f05f6e.jpg"}
+      ],
+      C: [
+        {name: "Creed Aventus – Creed", type: "Pria", volume: "75ml", duration: "Tahan hingga 9 jam", price: "Rp 2.500.000", desc: "Creed Aventus adalah parfum pria yang memadukan aroma buah nanas segar dan blackcurrant dengan dasar musk dan oakmoss yang maskulin. Parfum ini memberikan kesan kuat dan percaya diri, cocok untuk pria modern yang berani tampil beda. Aroma tahan lama membuatnya ideal untuk acara formal maupun santai. Botolnya yang elegan menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pecinta parfum mewah." , img: "https://i.pinimg.com/736x/4f/f2/31/4ff231f98a5a5e0613c062ed7710eac4.jpg"},
+        {name: "Chanel No. 5 – Chanel", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 2.200.000", desc: "Chanel No. 5 adalah parfum klasik dengan aroma floral aldehyde yang elegan dan abadi. Parfum ini memberikan kesan feminin dan mewah, cocok untuk wanita yang menghargai keanggunan. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botol ikoniknya menambah daya tarik produk ini. Parfum ini telah menjadi simbol keindahan dan kemewahan selama bertahun-tahun." , img: "https://i.pinimg.com/736x/1d/78/65/1d78655e6e1c5f86daaa8e6e91988eb7.jpg"}
+      ],
+      D: [
+        {name: "Dior Sauvage – Dior", type: "Pria", volume: "100ml", duration: "Tahan hingga 8 jam", price: "Rp 1.800.000", desc: "Dior Sauvage adalah parfum pria dengan aroma segar dan spicy yang memadukan bergamot dan ambroxan. Parfum ini memberikan kesan liar dan bebas, cocok untuk pria yang aktif dan percaya diri. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara khusus. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/31/c7/8a/31c78aad251eb9688f6087556e52d2ee.jpg"},
+        {name: "Daisy – Marc Jacobs", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.400.000", desc: "Daisy adalah parfum wanita dengan aroma bunga liar yang segar dan feminin. Parfum ini cocok untuk penggunaan sehari-hari dan memberikan kesan ceria dan muda. Aroma tahan lama membuatnya ideal untuk acara santai maupun formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/b1/fb/5f/b1fb5fd1f87007c226df9c04897aacc2.jpg"}
+      ],
+      E: [
+        {name: "Eros – Versace", type: "Pria", volume: "100ml", duration: "Tahan hingga 7 jam", price: "Rp 1.500.000", desc: "Eros adalah parfum pria dengan aroma mint, green apple, dan vanila yang segar dan manis. Parfum ini menciptakan kesan penuh gairah dan energi, cocok untuk pria muda yang percaya diri. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang berani menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/c1/e1/84/c1e184a70843e69d27b5316ee32ed138.jpg"},
+        {name: "Euphoria – Calvin Klein", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.400.000", desc: "Euphoria adalah parfum wanita dengan aroma eksotis yang memadukan pomegranate dan anggrek hitam. Parfum ini memberikan kesan misterius dan sensual, cocok untuk wanita yang ingin tampil menawan. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang elegan menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/25/9e/76/259e76a2416431e17ad0c50f5baba57a.jpg"}
+      ],
+      F: [
+        {name: "Fahrenheit – Dior", type: "Pria", volume: "75ml", duration: "Tahan hingga 7 jam", price: "Rp 1.200.000", desc: "Fahrenheit adalah parfum pria dengan aroma kulit dan bunga violet yang unik. Parfum ini memberikan kesan hangat dan maskulin, cocok untuk pria yang ingin tampil berbeda. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang klasik menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/22/a8/67/22a86754f0674279d7f52ca40720c501.jpg"},
+        {name: "Flowerbomb – Viktor & Rolf", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.100.000", desc: "Flowerbomb adalah parfum wanita dengan ledakan aroma bunga yang manis dan memikat. Parfum ini memadukan jasmine dan patchouli, memberikan kesan feminin dan menggoda. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang unik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/bd/7b/74/bd7b744809cc22f304f3f4dd017f75c7.jpg"}
+      ],
+      G: [
+        {name: "Gucci Bloom – Gucci", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.150.000", desc: "Gucci Bloom adalah parfum wanita dengan aroma bunga putih yang kaya dan alami. Parfum ini memadukan jasmine dan tuberose, memberikan kesan elegan dan segar. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/c3/f9/2d/c3f92dce3a867224532555f34e39260e.jpg"},
+        {name: "Gentleman – Givenchy", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.300.000", desc: "Gentleman adalah parfum pria dengan aroma woody dan spicy yang memadukan lavender dan patchouli. Parfum ini memberikan kesan elegan dan berkelas, cocok untuk pria yang percaya diri. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/1c/3b/44/1c3b44e5bf7a4f30d3088f466f95af37.jpg"}
+      ],
+      H: [
+        {name: "Hypnotic Poison – Dior", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.100.000", desc: "Hypnotic Poison adalah parfum wanita dengan aroma vanila dan almond yang manis dan menggoda. Parfum ini memberikan kesan misterius dan sensual, cocok untuk acara malam dan spesial. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara khusus. Botolnya yang unik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/c2/0a/75/c20a754fb03962252ce94d6fa7e78be1.jpg"},
+        {name: "Hugo Man – Hugo Boss", type: "Pria", volume: "75ml", duration: "Tahan hingga 7 jam", price: "Rp 1.250.000", desc: "Hugo Man adalah parfum pria dengan aroma segar yang memadukan green apple dan mint. Parfum ini cocok untuk pria aktif dan dinamis, memberikan kesan energik dan percaya diri. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/13/e4/be/13e4be91c9ae7459415b3a5646d56018.jpg"}
+      ],
+      I: [
+        {name: "Idôle – Lancôme", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.200.000", desc: "Idôle adalah parfum wanita dengan aroma floral yang ringan dan bersih. Parfum ini memadukan rose dan jasmine, memberikan kesan modern dan elegan. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/64/dc/60/64dc608352d4e15f7506bdadff960864.jpg"},
+        {name: "Invictus – Paco Rabanne", type: "Pria", volume: "100ml", duration: "Tahan hingga 8 jam", price: "Rp 1.300.000", desc: "Invictus adalah parfum pria dengan aroma segar dan sporty yang memadukan grapefruit dan marine accord. Parfum ini cocok untuk pria yang aktif dan percaya diri. Aroma tahan lama membuatnya ideal untuk acara olahraga dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/d3/f1/11/d3f1115b629ec911ca145bf6fac6d57c.jpg"}
+      ],
+      J: [
+        {name: "J'adore – Dior", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.350.000", desc: "J'adore adalah parfum wanita dengan aroma bunga yang mewah. Parfum ini memadukan jasmine dan ylang-ylang, memberikan kesan feminin dan elegan. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/ab/01/10/ab0110b833eb3da78eb535526cc0a59b.jpg"},
+        {name: "Joop! Homme – Joop!", type: "Pria", volume: "75ml", duration: "Tahan hingga 7 jam", price: "Rp 1.200.000", desc: "Joop! Homme adalah parfum pria dengan aroma manis dan spicy. Parfum ini memadukan cinnamon dan orange blossom, memberikan kesan berani dan unik. Aroma tahan lama membuatnya ideal untuk acara malam dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/5e/4b/57/5e4b57669596e596b6387cf075c3700c.jpg"}
+      ],
+      K: [
+        {name: "Kenzo Flower – Kenzo", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 1.250.000", desc: "Kenzo Flower adalah parfum wanita dengan aroma floral oriental yang memadukan blackcurrant, rose, dan vanilla. Parfum ini memberikan kesan feminin dan elegan. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/ff/3d/90/ff3d90941633e79c61f64d3a2c783d93.jpg"},
+        {name: "K by Dolce & Gabbana – Dolce & Gabbana", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.400.000", desc: "K by Dolce & Gabbana adalah parfum pria dengan aroma woody aquatic yang memadukan mint, citrus, dan vanilla. Parfum ini memberikan kesan segar dan maskulin. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/1f/fe/aa/1ffeaa341af4fc96ba5ec449691a5c50.jpg"}
+      ],
+      L: [
+        {name: "La Vie Est Belle – Lancôme", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.500.000", desc: "La Vie Est Belle adalah parfum wanita dengan aroma manis dan floral. Parfum ini memadukan iris, praline, dan patchouli, memberikan kesan bahagia dan optimis. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/83/76/19/837619690961194b86b40ac50b14cf69.jpg"},
+        {name: "Le Male – Jean Paul Gaultier", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.350.000", desc: "Le Male adalah parfum pria dengan aroma spicy woody yang memadukan ginger dan cedarwood. Parfum ini memberikan kesan elegan dan modern. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/35/61/07/356107f102a13fa780e7cfb5f62e0778.jpg"}
+      ],
+      M: [
+        {name: "Miss Dior – Dior", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.600.000", desc: "Miss Dior adalah parfum wanita dengan aroma floral chypre yang memadukan rose, patchouli, dan musk. Parfum ini memberikan kesan romantis dan klasik. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/02/d9/93/02d99382b94b14078b79b35b1e112b44.jpg"},
+        {name: "Montblanc Explorer – Montblanc", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.300.000", desc: "Montblanc Explorer adalah parfum pria dengan aroma fougère yang memadukan lavender, pineapple, dan oakmoss. Parfum ini memberikan kesan maskulin dan percaya diri. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/9c/86/ca/9c86ca48843f4cc4c4865b02daae1727.jpg"}
+      ],
+      N: [
+        {name: "Narciso Rodriguez For Her – Narciso Rodriguez", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.450.000", desc: "Narciso Rodriguez For Her adalah parfum wanita dengan aroma musky floral yang memadukan orange blossom dan amber. Parfum ini memberikan kesan sensual dan elegan. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/58/d7/60/58d760ce585b0baa652fc7deef89f0ae.jpg"},
+        {name: "Nautica Voyage – Nautica", type: "Pria", volume: "100ml", duration: "Tahan hingga 8 jam", price: "Rp 1.100.000", desc: "Nautica Voyage adalah parfum pria dengan aroma aquatic yang memadukan apple dan green leaves. Parfum ini memberikan kesan segar dan sporty. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/e1/f8/c7/e1f8c7f45130b2d3619bc7bd5d851bba.jpg"}
+      ],
+      O: [
+        {name: "Olympea – Paco Rabanne", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.400.000", desc: "Olympea adalah parfum wanita dengan aroma floral woody yang memadukan bamboo dan lotus. Parfum ini memberikan kesan ringan dan elegan. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/bf/2c/6c/bf2c6c7f9c056507d4fd4cfad7527563.jpg"},
+        {name: "One Million – Paco Rabanne", type: "Pria", volume: "100ml", duration: "Tahan hingga 8 jam", price: "Rp 1.550.000", desc: "One Million adalah parfum pria dengan aroma spicy leather yang memadukan cinnamon dan amber. Parfum ini memberikan kesan mewah dan berani. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/22/e6/63/22e663f430c994c90e41153ceb42c4cb.jpg"}
+      ],
+      P: [
+        {name: "Poison Girl – Dior", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.700.000", desc: "Poison Girl adalah parfum wanita dengan aroma floral yang memadukan lily dan peony. Parfum ini memberikan kesan segar dan feminin. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/11/9a/9b/119a9bb430d5cfeb45e5e1892112f110.jpg"},
+        {name: "Pure XS – Paco Rabanne", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.400.000", desc: "Pure XS adalah parfum pria dengan aroma aquatic yang memadukan melon dan basil. Parfum ini memberikan kesan segar dan energik. Aroma tahan lama membuatnya ideal untuk acara malam dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/f3/60/47/f36047b1c38c7d46ddd99e7d80ff7774.jpg"}
+      ],
+      Q: [
+        {name: "Queen of Seduction – Antonio Banderas", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 650.000", desc: "Queen of Seduction adalah parfum wanita dengan aroma aquatic floral yang memadukan grapefruit dan jasmine. Parfum ini memberikan kesan segar dan menggoda. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang unik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/78/d0/82/78d082305c49ddbda9ecaba221e024a0.jpg"},
+        {name: "Quasar – O Boticário", type: "Pria", volume: "75ml", duration: "Tahan hingga 7 jam", price: "Rp 700.000", desc: "Quasar adalah parfum pria dengan aroma woody spicy yang memadukan leather dan tobacco. Parfum ini memberikan kesan klasik dan maskulin. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/5c/75/95/5c7595eb18a382943739fc858703bc2a.jpg"}
+      ],
+      R: [
+        {name: "Romance – Ralph Lauren", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.550.000", desc: "Romance adalah parfum wanita dengan aroma floral yang memadukan rose dan ginger. Parfum ini memberikan kesan romantis dan segar. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/e3/f1/88/e3f1889f8bbbeef78b3e7819f35aa2e6.jpg"},
+        {name: "Rochas Man – Rochas", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.200.000", desc: "Rochas Man adalah parfum pria dengan aroma gourmand yang memadukan coffee dan vanilla. Parfum ini memberikan kesan manis dan maskulin. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/68/a3/b2/68a3b22a1257c5a18d877e98586a7dbf.jpg"}
+      ],
+      S: [
+        {name: "Scandal – Jean Paul Gaultier", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.650.000", desc: "Scandal adalah parfum wanita dengan aroma sweet chypre yang memadukan madu, gardenia, dan patchouli. Parfum ini memberikan kesan sensual dan berani. Aroma tahan lama membuatnya ideal untuk acara malam dan spesial. Botolnya yang unik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/6a/61/5b/6a615bb430b5b17c6f778cd5589b4f23.jpg"},
+        {name: "Stronger With You – Emporio Armani", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.845.000", desc: "Stronger With You adalah parfum pria dengan aroma manis dan hangat yang memadukan chestnut, vanilla, dan sage. Parfum ini memberikan kesan romantis dan maskulin. Aroma tahan lama membuatnya ideal untuk acara malam dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/49/54/ab/4954ab40d29025d72fd883b4c5b779db.jpg"}
+      ],
+      T: [
+        {name: "Tiffany & Co. – Eau de Parfum", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 2.000.000", desc: "Tiffany & Co. Eau de Parfum adalah parfum wanita dengan aroma oriental floral yang memadukan peach dan rose. Parfum ini memberikan kesan hangat dan romantis. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/ba/35/e4/ba35e4d278d75e53227701d887a9de0a.jpg"},
+        {name: "Terre d’Hermès – Hermès", type: "Pria", volume: "100ml", duration: "Tahan hingga 8 jam", price: "Rp 2.250.000", desc: "Terre d’Hermès adalah parfum pria dengan aroma woody spicy yang memadukan orange dan vetiver. Parfum ini memberikan kesan elegan dan maskulin. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/62/96/b4/6296b41335da127ee7363f6556effe72.jpg"}
+      ],
+      U: [
+        {name: "Un Jardin Sur Le Nil – Hermès", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 2.100.000", desc: "Un Jardin Sur Le Nil adalah parfum wanita dengan aroma segar dan ringan yang memadukan mangga hijau, lotus, dan grapefruit. Parfum ini memberikan kesan alami dan elegan. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/6a/2a/8f/6a2a8f52e18bb651b6fc96a8a2cbc00c.jpg"},
+        {name: "Uomo – Salvatore Ferragamo", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.500.000", desc: "Uomo adalah parfum pria dengan aroma oriental woody yang memadukan tiramisu, tonka bean, dan sandalwood. Parfum ini memberikan kesan manis dan maskulin. Aroma tahan lama membuatnya ideal untuk acara malam dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/43/5d/8a/435d8af63e2cd2686bf2886091df9e8b.jpg"}
+      ],
+      V: [
+        {name: "Versace Bright Crystal – Versace", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.350.000", desc: "Versace Bright Crystal adalah parfum wanita dengan aroma floral fruity yang memadukan yuzu, pomegranate, dan peony. Parfum ini memberikan kesan segar dan feminin. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/6e/79/01/6e7901a5b7c8ef1406805aec5eb338b4.jpg"},
+        {name: "Valentino Uomo – Valentino", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 2.100.000", desc: "Valentino Uomo adalah parfum pria dengan aroma gourmand yang memadukan hazelnut, chocolate, dan leather. Parfum ini memberikan kesan mewah dan elegan. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/c8/70/c8/c870c80c7b3897f6d8fe4af3dee2bb2c.jpg"}
+      ],
+      W: [
+        {name: "Wonderlust – Michael Kors", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 1.600.000", desc: "Wonderlust adalah parfum wanita dengan aroma segar dan feminin yang memadukan bunga dan buah. Parfum ini menciptakan kesan petualangan dan kebebasan. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/eb/58/18/eb5818e5460ecf574cf09e4bc374362b.jpg"},
+        {name: "Wanted – Azzaro", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.400.000", desc: "Wanted adalah parfum pria dengan aroma maskulin yang kuat, memadukan rempah dan kayu. Parfum ini memberikan kesan percaya diri dan berani. Aroma tahan lama membuatnya ideal untuk acara malam dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/c2/5c/f1/c25cf1ff08b02d505d5aea989aa714ad.jpg"}
+      ],
+      X: [
+        {name: "X Feminine – Clive Christian", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 6.500.000", desc: "X Feminine adalah parfum wanita yang mewah dan elegan dengan kombinasi bunga dan rempah. Parfum ini menciptakan kesan feminin dan eksklusif. Aroma tahan lama membuatnya ideal untuk acara formal dan spesial. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita yang menghargai kemewahan." , img: "https://i.pinimg.com/736x/41/ff/25/41ff25a108bb1d0ea191e16824a46bbd.jpg"},
+        {name: "X Masculine – Clive Christian", type: "Pria", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 6.500.000", desc: "X Masculine adalah parfum pria dengan aroma maskulin yang intens, memadukan kayu dan rempah. Parfum ini memberikan kesan kuat dan berkelas. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria yang menghargai kemewahan." , img: "https://i.pinimg.com/736x/f6/41/db/f641dba6cd5e04b72ffd855b062c2a50.jpg"}
+      ],
+      Y: [
+        {name: "Yves Saint Laurent Libre – YSL", type: "Wanita", volume: "50ml", duration: "Tahan hingga 7 jam", price: "Rp 2.000.000", desc: "Yves Saint Laurent Libre adalah parfum wanita yang modern dan berani dengan kombinasi lavender dan vanila. Parfum ini menciptakan kesan feminin dan kuat. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang cantik menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/ea/36/e7/ea36e7700f9d32ec0771b3460cc0c956.jpg"},
+        {name: "Y Eau de Parfum – YSL", type: "Pria", volume: "75ml", duration: "Tahan hingga 8 jam", price: "Rp 1.950.000", desc: "Y Eau de Parfum adalah parfum pria dengan aroma segar dan maskulin yang memadukan jeruk dan kayu. Parfum ini memberikan kesan energik dan percaya diri. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara formal. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria muda." , img: "https://i.pinimg.com/736x/89/ea/11/89ea111e0a5c37c9798f6c6158e49eb4.jpg"}
+      ],
+      Z: [
+        {name: "Z Woman – Zara", type: "Wanita", volume: "50ml", duration: "Tahan hingga 6 jam", price: "Rp 450.000", desc: "Z Woman adalah parfum wanita dengan aroma floral dan segar yang memadukan buah dan musk. Parfum ini memberikan kesan feminin dan elegan. Aroma tahan lama membuatnya ideal untuk penggunaan sehari-hari maupun acara santai. Botolnya yang sederhana menambah daya tarik produk ini. Parfum ini sangat digemari oleh wanita muda." , img: "https://i.pinimg.com/736x/a3/1f/e8/a31fe8386121e3b7b075c71eac6027ff.jpg"},
+        {name: "Z Zegna – Ermenegildo Zegna", type: "Pria", volume: "75ml", duration: "Tahan hingga 7 jam", price: "Rp 1.200.000", desc: "Z Zegna adalah parfum pria dengan aroma maskulin yang halus, memadukan kayu dan rempah. Parfum ini memberikan kesan elegan dan modern. Aroma tahan lama membuatnya ideal untuk acara formal dan santai. Botolnya yang maskulin menambah nilai estetika produk ini. Parfum ini sangat populer di kalangan pria dewasa." , img: "https://i.pinimg.com/736x/1e/52/d8/1e52d847569405976a2fded44579bed7.jpg"}
+      ],
+      UN: [
+        {name: "Diptyque Do Son – Eau De Parfum", type: "Unisex", volume: "75 ml", duration: "Tahan hingga 8 jam", price: "Rp 2.400.000", desc: "Diptyque Do Son menghadirkan aroma floral segar yang memikat dengan sentuhan melati dan jeruk. Parfum ini cocok untuk digunakan sepanjang hari karena memberikan kesan ringan namun tetap elegan. Nuansa tuberose yang dominan menambahkan keharuman yang lembut namun tahan lama. Cocok untuk kamu yang ingin tampil bersih dan feminin tanpa berlebihan. Aroma ini memberikan perasaan nostalgia yang tenang dan menenangkan.", img: "https://i.pinimg.com/736x/2b/11/18/2b1118591c668bad8f9ba424e20fe416.jpg"},
+        {name: "Zimaya Tiramisu Caramel – EDP", type: "Unisex", volume: "100ml", duration: "Tahan hingga 9 jam", price: "Rp 2.500.000", desc: "Zimaya Tiramisu Caramel adalah parfum manis gourmand dengan sentuhan tiramisu dan karamel. Wangi ini memberikan kesan hangat dan menggoda, sangat cocok digunakan di malam hari atau saat cuaca dingin. Aroma creamy-nya membawa kesan seperti dessert yang mewah dan lezat. Kesan pertamanya menggoda, lalu berkembang menjadi aroma manis yang menenangkan. Parfum ini cocok bagi pecinta aroma manis yang ingin tampil beda dan menarik.", img: "https://i.pinimg.com/736x/8b/46/a5/8b46a590bbcbc45f094fda17c52cc95b.jpg"}
+      ],
+      EX: [
+        {name: "Clive Christian No. 1", type: "Eksklusif", volume: "50ml", duration: "Tahan hingga 12 jam", price: "Rp 15.000.000", desc: " Clive Christian No. 1 adalah simbol kemewahan dan keanggunan dalam dunia parfum. Aroma kompleksnya memadukan bunga langka dengan rempah-rempah berkualitas tinggi. Setiap semprotan menciptakan aura eksklusif dan berkelas. Wangi ini sangat tahan lama dan berubah secara elegan sepanjang hari. Ideal untuk acara formal atau saat ingin tampil mewah dan istimewa.", img: "https://i.pinimg.com/736x/41/2b/99/412b9915ca223f100578401524f3a91f.jpg"},
+        {name: "Amouage Reflection Man", type: "Eksklusif", volume: "100ml", duration: "Tahan hingga 10 jam", price: "Rp 12.000.000", desc: "Amouage Reflection Man adalah parfum pria dengan komposisi woody floral yang lembut namun maskulin. Perpaduan melati, neroli, dan kayu cendana menciptakan aroma yang bersih dan elegan. Wangi ini cocok untuk pria modern yang ingin tampil rapi dan percaya diri. Ketahanan aromanya cukup kuat, membuatnya ideal untuk penggunaan sepanjang hari. Parfum ini memancarkan kesan mewah tanpa harus mencolok.", img: "https://i.pinimg.com/736x/61/c1/0e/61c10e13b8895af2a9cd5e1499795528.jpg"}
+      ],
+    };
+    // Function to get URL parameter by name
+    function getURLParameter(name) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+      const results = regex.exec(window.location.href);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    // Function to normalize string for matching
+    function normalize(str) {
+      return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    }
+
+    // Function to find product by normalized name
+    function findProductByName(normalizedName) {
+      for (const key in products) {
+        if (products.hasOwnProperty(key)) {
+          const productList = products[key];
+          for (const product of productList) {
+            if (normalize(product.name) === normalizedName) {
+              return product;
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    // Populate product details on page load
+    window.addEventListener('load', () => {
+      const productNameParam = getURLParameter('product');
+      if (!productNameParam) {
+        document.getElementById('productName').textContent = 'Produk tidak ditemukan';
+        return;
+      }
+      const normalizedProductName = normalize(productNameParam);
+      const product = findProductByName(normalizedProductName);
+      if (!product) {
+        document.getElementById('productName').textContent = 'Produk tidak ditemukan';
+        return;
+      }
+      document.title = `Detail Produk - ${product.name}`;
+      document.getElementById('productName').textContent = product.name;
+      const imgElem = document.getElementById('productImage');
+      imgElem.src = product.img;
+      imgElem.alt = product.name;
+      document.getElementById('productCategory').textContent = product.type;
+      document.getElementById('productVolume').textContent = product.volume || '-';
+      document.getElementById('productDuration').textContent = product.duration || '-';
+      // Adjust price to match koleksi.html format
+      // In koleksi.html, prices are like "Rp 1.200.000", so ensure same format here
+      // product.price in products dictionary already matches koleksi.html format, so just assign directly
+      document.getElementById('productPrice').textContent = product.price || '-';
+      // Adjust price to match koleksi.html format
+      // In koleksi.html, prices are like "Rp 1.200.000", so ensure same format here
+      // product.price in products dictionary already matches koleksi.html format, so just assign directly
+      document.getElementById('productPriceDisplay').textContent = product.price || '-';
+      document.getElementById('productDescription').textContent = product.desc;
+    });
+    function addToCart() {
+      const product = findProductByName(getURLParameter('product'));
+      if (!product) {
+        alert('Produk tidak ditemukan!');
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Produk berhasil ditambahkan ke keranjang!');
+    }
+
+    function checkoutNow() {
+      const product = findProductByName(getURLParameter('product'));
+      if (!product) {
+        alert('Produk tidak ditemukan!');
+        return;
+      }
+      localStorage.setItem('checkoutProduct', JSON.stringify(product));
+      window.location.href = 'checkout.html';
+    }
+
+    function goToCart() {
+      window.location.href = 'keranjang.html';
+    }
+  </script>
+</body>
+</html>

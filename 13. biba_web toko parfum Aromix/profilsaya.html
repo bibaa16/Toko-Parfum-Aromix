@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lengkapi Profil - Toko Parfum</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4e1d2;
+      color: #5a3e3a;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 360px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 24px;
+      color: #7a4f4a;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    input[type="text"],
+    input[type="email"] {
+      padding: 10px 12px;
+      border: 2px solid #d8a6b8;
+      border-radius: 6px;
+      font-size: 16px;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      border-color: #c48ca3;
+    }
+    .readonly {
+      background-color: #e9e9e9;
+      color: #7a4f4a;
+    }
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #d8a6b8;
+      background-position: center;
+      background-size: cover;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .upload-btn {
+      background-color: #d8a6b8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    .upload-btn:hover {
+      background-color: #c48ca3;
+    }
+    .btn-logout {
+      background-color: #b35c7e;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .btn-logout:hover {
+      background-color: #8e3f5a;
+    }
+    .btn-save {
+      background-color: #7a4f4a;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    .btn-save:hover {
+      background-color: #5a3e3a;
+    }
+    .close-popup {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #7a4f4a;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container" id="profilePopup">
+    <div class="close-popup" id="closePopup" title="Tutup">&times;</div>
+    <h1>Lengkapi Profil Anda</h1>
+    <div class="profile-photo" id="profilePhoto" title="Foto Profil"></div>
+    <input type="file" id="uploadPhoto" accept="image/*" style="display:none" />
+    <button class="upload-btn" id="uploadBtn">Upload Foto</button>
+    <form id="profileForm">
+      <input type="text" id="fullName" name="fullName" placeholder="Nama Lengkap" required />
+      <input type="email" id="email" name="email" placeholder="Email" readonly class="readonly" />
+      <input type="text" id="username" name="username" placeholder="Username" readonly class="readonly" />
+      <button type="submit" class="btn-save">Simpan Profil</button>
+    </form>
+    <button class="btn-logout" id="logoutBtn">Logout</button>
+  </div>
+
+  <script>
+    // Load user data from localStorage
+    function loadUserData() {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (!loggedInUser) {
+        // Not logged in, redirect to login page
+        window.location.href = 'login.html';
+        return null;
+      }
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      const user = users[loggedInUser];
+      if (!user) {
+        // User data not found, redirect to login
+        window.location.href = 'login.html';
+        return null;
+      }
+      return { username: loggedInUser, ...user };
+    }
+
+    // Display user data in form and photo
+    function displayUserData(user) {
+      const fullNameInput = document.getElementById('fullName');
+      const emailInput = document.getElementById('email');
+      const usernameInput = document.getElementById('username');
+      const profilePhotoDiv = document.getElementById('profilePhoto');
+
+      fullNameInput.value = user.fullName || '';
+      emailInput.value = user.email || '';
+      usernameInput.value = user.username || '';
+
+      if (user.photo) {
+        profilePhotoDiv.style.backgroundImage = `url(${user.photo})`;
+      } else {
+        profilePhotoDiv.style.backgroundImage = '';
+      }
+    }
+
+    // Save user data to localStorage
+    function saveUserData(user) {
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      users[user.username] = user;
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = loadUserData();
+      if (!user) return;
+
+      displayUserData(user);
+
+      const uploadBtn = document.getElementById('uploadBtn');
+      const uploadPhoto = document.getElementById('uploadPhoto');
+      const profilePhotoDiv = document.getElementById('profilePhoto');
+      const profileForm = document.getElementById('profileForm');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const closePopup = document.getElementById('closePopup');
+
+      uploadBtn.addEventListener('click', () => {
+        uploadPhoto.click();
+      });
+
+      uploadPhoto.addEventListener('change', () => {
+        const file = uploadPhoto.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            profilePhotoDiv.style.backgroundImage = `url(${e.target.result})`;
+            user.photo = e.target.result;
+            saveUserData(user);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        user.fullName = document.getElementById('fullName').value.trim();
+        saveUserData(user);
+        alert('Profil berhasil disimpan!');
+        // Redirect to last visited page or koleksi.html
+        const lastPage = sessionStorage.getItem('lastPage') || 'koleksi.html';
+        window.location.href = lastPage;
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUser');
+        window.location.href = 'login.html';
+      });
+
+      closePopup.addEventListener('click', () => {
+        // Redirect to last visited page or koleksi.html on popup close
+        const lastPage = sessionStorage.getItem('lastPage') || 'koleksi.html';
+        window.location.href = lastPage;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daftar - Toko Parfum</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4e1d2;
+      color: #5a3e3a;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .register-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 24px;
+      color: #7a4f4a;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      padding: 10px 12px;
+      border: 2px solid #d8a6b8;
+      border-radius: 6px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      border-color: #c48ca3;
+    }
+    button {
+      background-color: #d8a6b8;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c48ca3;
+    }
+    .login-link {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #7a4f4a;
+    }
+    .login-link a {
+      color: #d8a6b8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1>Daftar</h1>
+    <form id="registerForm" action="#" method="post">
+      <input type="text" name="username" placeholder="Nama Pengguna" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Kata Sandi" required />
+      <input type="password" name="confirm_password" placeholder="Konfirmasi Kata Sandi" required />
+      <button type="submit">Daftar</button>
+    </form>
+    <div class="login-link">
+      Sudah punya akun? <a href="login.html">Masuk di sini</a>
+    </div>
+    <div class="back-box" onclick="history.back()">Kembali</div>
+    <script>
+      document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = this.username.value.trim();
+        const email = this.email.value.trim();
+        const password = this.password.value;
+        const confirmPassword = this.confirm_password.value;
+        if (password !== confirmPassword) {
+          alert('Kata sandi dan konfirmasi kata sandi tidak cocok.');
+          return;
+        }
+        let users = JSON.parse(localStorage.getItem('users') || '{}');
+        if (users[username]) {
+          alert('Nama pengguna sudah terdaftar.');
+          return;
+        }
+        // Check if email is already used
+        for (const user in users) {
+          if (users[user].email === email) {
+            alert('Email sudah terdaftar.');
+            return;
+          }
+        }
+        users[username] = { username, email, password };
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('loggedInUser', username);
+        alert('Pendaftaran berhasil! Anda telah masuk.');
+        // Check if user profile is complete (fullName)
+        const updatedUsers = JSON.parse(localStorage.getItem('users') || '{}');
+        const user = updatedUsers[username];
+        if (!user.fullName) {
+          window.location.href = 'profilsaya.html';
+        } else {
+          // Redirect to last visited page or koleksi.html
+          const lastPage = sessionStorage.getItem('lastPage') || 'koleksi.html';
+          window.location.href = lastPage;
+        }
+      });
+    </script>
+  </div>

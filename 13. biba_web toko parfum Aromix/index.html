@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beranda - Toko Parfum</title>
+  <style>
+    /* CSS untuk body dan layout umum */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #ffffff;
+    }
+    /* CSS untuk header */
+  .header {
+    background-image: url('https://i.pinimg.com/736x/ea/1b/70/ea1b70b07241c86e9a69bf951d00dce6.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    text-align: center;
+    color: rgb(197, 78, 94);
+    font-size: 30px;
+  }
+    /* CSS untuk navbar menggunakan flexbox agar bisa atur posisi kiri, tengah, kanan */
+    .navbar {
+      display: flex; /* ubah dari overflow:hidden ke flex */
+      align-items: center;
+      justify-content: space-between; /* kiri dan kanan berjauhan */
+      background-color: #7a4f4a;
+      padding: 0 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    /* Container untuk link navigasi kiri */
+    .nav-left {
+      display: flex;
+      gap: 10px;
+    }
+    /* Style untuk link navigasi */
+    .navbar a {
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .navbar a:hover {
+      background-color: #a07f7a;
+    }
+    /* Container untuk search bar di tengah */
+    .nav-center {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+    /* Style untuk input search */
+    #searchInput {
+      width: 300px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: none;
+      font-size: 16px;
+    }
+  /* Container untuk dropdown akun saya di kanan */
+  .nav-right {
+    position: relative;
+    display: inline-block;
+  }
+  /* Style tombol dropdown */
+  .dropdown-btn {
+    background-color: #7a4f4a;
+    color: white;
+    border: none;
+    padding: 14px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .dropdown-btn:hover {
+    background-color: #a07f7a;
+  }
+  /* Remove dropdown styles as dropdown is removed */
+  /* Style for nav-right links */
+  .nav-right a.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 14px 16px;
+    display: inline-block;
+    font-size: 16px;
+  }
+  .nav-right a.nav-link:hover {
+    background-color: #a07f7a;
+  }
+    /* Style untuk daftar saran pencarian */
+    #suggestions {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 300px;
+      font-size: 16px;
+      z-index: 2;
+      border-radius: 0 0 4px 4px;
+    }
+    #suggestions div {
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    #suggestions div:hover {
+      background-color: #f0f0f0;
+    }
+    /* CSS untuk main content */
+    .main {
+      padding: 20px;
+      text-align: center;
+    }
+    .main h1 {
+      color: #5a3e3a;
+    }
+  /* CSS untuk footer */
+  .footer {
+    background-color: #7a4f4a;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+  }
+
+  /* CSS untuk banner utama */
+  .banner {
+    position: relative;
+    background-image: url('https://i.pinimg.com/736x/9e/1b/9b/9e1b9b51d64c33223226aa13c0b4ecbd.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    color: #f5f5f5; /* lighter text color for better readability */
+  }
+
+  /* Overlay gelap untuk meningkatkan kontras teks */
+  .banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* stronger overlay for better text visibility */
+    z-index: 0;
+  }
+
+  /* Konten banner di atas overlay */
+  .banner-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 20px;
+  }
+
+  .banner-title {
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .banner-subtitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  /* Tombol call to action */
+  .banner-button {
+    background-color: #b35c7e;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .banner-button:hover {
+    background-color: #8e3f5a;
+  }
+
+  /* Responsive tombol */
+  @media (max-width: 600px) {
+    .banner-title {
+      font-size: 36px;
+    }
+    .banner-subtitle {
+      font-size: 18px;
+    }
+    .banner-button {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+  }
+
+  /* CSS untuk kategori produk */
+  .product-categories {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 40px 20px;
+    background-image: url('https://i.pinimg.com/736x/c8/48/0f/c8480f99fe46235fb40a09f1cd93d9db.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+  }
+  /* CSS untuk promo dan diskon */
+  .promo-discount {
+    background-image: url('https://i.pinimg.com/736x/06/fa/0b/06fa0b98ad299a3cc497d38d314de444.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 10px;
+  }
+  /* CSS untuk promo dan diskon */
+  .promo-discount {
+    background-image: url('https://i.pinimg.com/736x/39/d6/75/39d6757b5cd4de4bd6c89745b8103a2b.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 10px;
+  }
+
+  .category-card {
+    background-color: #f4e1d2;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+
+  .category-image {
+    width: 200px;
+    height: auto;
+    border-radius: 5px;
+    margin: 0 auto 15px auto;
+    display: block;
+  }
+
+  /* CSS untuk slider produk unggulan */
+  .featured-products {
+    margin-top: 50px;
+    padding: 0 20px;
+  }
+
+  .slider-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .slider-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .product-card {
+    background-color: #f4e1d2;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin: 0 10px;
+    flex: 0 0 200px;
+    text-align: center;
+    padding-bottom: 15px;
+  }
+
+  .product-image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    margin: 15px auto 10px auto;
+    border-radius: 5px;
+  }
+
+  .product-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5a3e3a;
+    margin: 5px 0;
+  }
+
+  .product-price {
+    color: #b07a4a;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .product-rating {
+    color: #f5a623; /* gold star color */
+    margin-bottom: 10px;
+  }
+
+  .buy-button {
+    background-color: #d4a373;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .buy-button:hover {
+    background-color: #b07a4a;
+  }
+
+  /* Tombol navigasi slider */
+  .slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(180, 120, 70, 0.7);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .slider-nav:hover {
+    background-color: #b07a4a;
+  }
+
+  .slider-prev {
+    left: 10px;
+  }
+
+  .slider-next {
+    right: 10px;
+  }
+
+  /* CSS untuk promo dan diskon */
+  .promo-discount {
+    background-image: url('https://i.pinimg.com/736x/06/fa/0b/06fa0b98ad299a3cc497d38d314de444.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 10px;
+  }
+
+  /* CSS untuk keamanan dan pengalaman pengguna */
+  .security-experience {
+    background-color: #fff8f0;
+    padding: 30px 20px;
+    margin-top: 50px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* Override viral-products-grid to horizontal scroll flexbox */
+  .viral-products-grid {
+    display: flex !important;
+    gap: 20px !important;
+    overflow-x: auto !important;
+    padding-bottom: 10px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  @media (min-width: 901px) {
+    .viral-products-grid {
+      justify-content: center !important;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Toko Parfum Aromix
+</div>
+
+<!-- Navbar dengan 3 bagian: kiri, tengah, kanan -->
+<div class="navbar">
+  <!-- Bagian kiri: link navigasi -->
+  <div class="nav-left">
+    <a href="index.html">Beranda</a>
+    <a href="koleksi.html">Koleksi</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="keranjang.html">Keranjang</a>
+    <a href="checkout.html">Checkout</a>
+  </div>
+
+  <!-- Bagian tengah: search bar -->
+  <div class="nav-center">
+    <div style="position: relative;">
+<form id="searchForm" action="koleksi.html" method="GET" style="margin:0; display: flex; align-items: center; gap: 8px;">
+  <input type="text" id="searchInput" name="search" placeholder="cari parfum favoritmu" autocomplete="off" />
+  <button type="submit" style="padding: 6px 12px; background-color: #b35c7e; color: white; border: none; border-radius: 4px; cursor: pointer;">Cari</button>
+  <div id="suggestions" style="position: absolute; top: 100%; left: 0;"></div>
+</form>
+  <script>
+  // Intercept form submission to redirect with proper query parameters
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const input = document.getElementById('searchInput').value.trim();
+    if (!input) {
+      // If empty, submit normally
+      this.submit();
+      return;
+    }
+    // Convert input to URL-friendly format (lowercase, replace spaces with hyphens)
+    const query = input.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    // Redirect to koleksi.html with search and highlight query parameters
+    window.location.href = `koleksi.html?search=${query}&highlight=true`;
+  });
+  </script>
+    </div>
+  </div>
+
+  <!-- Bagian kanan: login, daftar, atau profil -->
+  <div class="nav-right" id="navRight">
+    <!-- Content will be dynamically updated by JS -->
+  </div>
+</div>
+
+<!-- Konten utama -->
+  <div class="main" style="margin-top: 0; background-image: url('https://i.pinimg.com/736x/6e/32/ca/6e32ca7ef5ea6013e12c7a11ca307f1a.jpg'); background-size: cover; background-position: center; padding: 20px; color: white;">
+    <h1>Selamat Datang!</h1>
+    <p style="color: #3a2e2a; font-weight: 600;">Di Toko Parfum, temukan parfum yang mencerminkan gaya dan kepribadian Anda.</p>
+    <p style="color: #3a2e2a; font-weight: 600;">Jelajahi koleksi kami sekarang!</p>
+  </div>
+
+<!-- Banner Utama -->
+<section class="banner">
+  <div class="banner-content">
+    <!-- Judul utama banner -->
+    <h2 class="banner-title">Temukan Parfum Terbaik untuk Setiap Moment</h2>
+    <!-- Sub-judul banner -->
+    <p class="banner-subtitle">Jualan parfum premium dengan kualitas terbaik.</p>
+    <!-- Tombol Call to Action -->
+    <button class="banner-button" onclick="window.location.href='koleksi.html'">Jelajahi Koleksi</button>
+  </div>
+</section>
+
+<!-- Kategori Produk -->
+<section class="product-categories">
+  <!-- Kategori Parfum Wanita -->
+  <div class="category-card">
+    <img src="https://i.pinimg.com/736x/a0/d2/eb/a0d2ebe350f9335a2b78ed3b807a1e0a.jpg" alt="Parfum Wanita" class="category-image" />
+    <h3 class="category-title">Parfum Wanita</h3>
+    <p class="category-description">Parfum wanita dengan aroma lembut dan elegan, cocok untuk berbagai acara dan aktivitas sehari-hari.</p>
+  </div>
+  <!-- Kategori Parfum Pria -->
+  <div class="category-card">
+    <img src="https://i.pinimg.com/736x/a0/08/c6/a008c6b4b1099fef08e3047d463d61fc.jpg" alt="Parfum Pria" class="category-image" />
+    <h3 class="category-title">Parfum Pria</h3>
+    <p class="category-description">Parfum pria dengan aroma maskulin dan segar, memberikan kesan percaya diri dan karisma.</p>
+  </div>
+  <!-- Kategori Parfum Unisex -->
+  <div class="category-card">
+    <img src="https://i.pinimg.com/736x/08/44/0d/08440db6e43fcb0b02c715f98bb5c905.jpg" alt="Parfum Unisex" class="category-image" />
+    <h3 class="category-title">Parfum Unisex</h3>
+    <p class="category-description">Parfum unisex yang cocok untuk siapa saja, dengan aroma yang unik dan menarik.</p>
+  </div>
+  <!-- Kategori Parfum Eksklusif -->
+  <div class="category-card">
+    <img src="https://i.pinimg.com/736x/96/0d/2a/960d2a5852bb62f82d1e1f6fe747e3bb.jpg" alt="Parfum Eksklusif" class="category-image" />
+    <h3 class="category-title">Parfum Eksklusif</h3>
+    <p class="category-description">Parfum eksklusif dengan bahan-bahan premium dan aroma yang tahan lama, untuk momen-momen spesial Anda.</p>
+  </div>
+  </section>
+
+  <!-- Bagian Promo & Diskon -->
+  <section class="promo-discount" style="background-color: #f4e1d2; padding: 30px 20px; text-align: center; margin-top: 50px; border-radius: 10px;">
+    <!-- Komentar: Banner promo diskon terbaru -->
+    <h2 style="color: #5a3e3a; margin-bottom: 15px;">Promo & Diskon Terbaru</h2>
+    <p style="font-size: 18px; color: #7a4f4a; margin-bottom: 20px;">Diskon 20% untuk Pembelian Pertama dan Gratis Ongkir untuk Pembelian di atas Rp500.000!</p>
+    <button onclick="closePromo()" style="background-color: #b35c7e; color: white; border: none; padding: 12px 25px; font-size: 16px; border-radius: 5px; cursor: pointer;">Tutup Promo</button>
+
+    <!-- Produk Parfum Viral -->
+    <div class="viral-products-container" style="margin-top: 30px;">
+      <div class="viral-products-grid" id="viralProductsGrid">
+        <!-- Product cards will be dynamically generated here -->
+      </div>
+      <a href="koleksi.html" class="buy-button" style="margin-top: 20px; display: inline-block;">Lihat Lebih Lanjut</a>
+    </div>
+    <script>
+      const viralProducts = [
+        {
+          name: "Hypnotic Poison – Dior",
+          price: "Rp 1.100.000",
+          image: "https://i.pinimg.com/736x/c2/0a/75/c20a754fb03962252ce94d6fa7e78be1.jpg",
+          productParam: "hypnotic-poison-dior"
+        },
+        {
+          name: "Clive Christian No. 1",
+          price: "Rp 15.000.000",
+          image: "https://i.pinimg.com/736x/41/2b/99/412b9915ca223f100578401524f3a91f.jpg",
+          productParam: "clive-christian-no-1"
+        },
+        {
+          name: "Stronger With You – Emporio Armani",
+          price: "Rp 1.845.000",
+          image: "https://i.pinimg.com/736x/49/54/ab/4954ab40d29025d72fd883b4c5b779db.jpg",
+          productParam: "stronger-with-you-emporio-armani"
+        },
+        {
+          name: "Scandal – Jean Paul Gaultier",
+          price: "Rp 1.650.000",
+          image: "https://i.pinimg.com/736x/6a/61/5b/6a615bb430b5b17c6f778cd5589b4f23.jpg",
+          productParam: "scandal-jean-paul-gaultier"
+        }
+      ];
+
+      const viralProductsGrid = document.getElementById('viralProductsGrid');
+
+      viralProducts.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.name;
+        img.className = 'product-image';
+        productCard.appendChild(img);
+
+        const name = document.createElement('h3');
+        name.className = 'product-name';
+        name.textContent = product.name;
+        productCard.appendChild(name);
+
+        const price = document.createElement('p');
+        price.className = 'product-price';
+        price.textContent = product.price;
+        productCard.appendChild(price);
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = 'button-group';
+
+        const addToCartBtn = document.createElement('button');
+        addToCartBtn.className = 'button-custom';
+        addToCartBtn.textContent = 'Tambah ke Keranjang';
+        addToCartBtn.onclick = () => addToCartStatic(product.name, product.price);
+        buttonGroup.appendChild(addToCartBtn);
+
+        const checkoutBtn = document.createElement('button');
+        checkoutBtn.className = 'button-custom';
+        checkoutBtn.style.marginTop = '8px';
+        checkoutBtn.textContent = 'Checkout Sekarang';
+        checkoutBtn.onclick = () => checkoutNowStatic(product.name, product.price);
+        buttonGroup.appendChild(checkoutBtn);
+
+        productCard.appendChild(buttonGroup);
+
+        const lihatProdukLink = document.createElement('a');
+        lihatProdukLink.href = `lihatdetail.html?product=${product.productParam}`;
+        lihatProdukLink.className = 'lihat-produk-button';
+        lihatProdukLink.style.textDecoration = 'none';
+        lihatProdukLink.style.display = 'inline-block';
+        lihatProdukLink.style.marginTop = '8px';
+        lihatProdukLink.textContent = 'Lihat Produk';
+        productCard.appendChild(lihatProdukLink);
+
+        viralProductsGrid.appendChild(productCard);
+      });
+    </script>
+  </section>
+
+  <!-- Pop-up Promo -->
+  <div id="promoPopup" style="display:none; position: fixed; top: 53%; left: 50%; transform: translate(-50%, -53%); background-color: #d46a8a; color: white; padding: 30px; border-radius: 10px; z-index: 999; text-align: center; width: 300px;">
+    <h3>Promo Spesial Hari Ini!</h3>
+    <p>Dapatkan diskon 25% untuk pembelian pertama Anda<br></p>
+    <button onclick="tutupPopup()" style="margin-top: 20px; padding: 10px 20px; background: white; color: #d46a8a; border: none; cursor: pointer; border-radius: 5px;">Tutup</button>
+  </div>
+
+  <!-- Bagian Keamanan dan Pengalaman Pengguna -->
+  <section class="security-experience" style="background-color: #fff8f0; padding: 30px 20px; margin-top: 50px; border-radius: 10px; max-width: 900px; margin-left: auto; margin-right: auto; text-align: center;">
+    <!-- Komentar: Menampilkan logo keamanan pembayaran dan penjelasan -->
+    <h2 style="color: #5a3e3a; margin-bottom: 20px;">Keamanan dan Pengalaman Pengguna</h2>
+    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 20px;">
+      <!-- Logo keamanan SSL -->
+      <img src="https://i.pinimg.com/1200x/93/9f/2c/939f2c3f255a46a5ffafd79dd4dcd073.jpg" alt="SSL Secure" style="height: 50px;" />
+      <!-- Logo metode pembayaran OVO -->
+      <img src="https://i.pinimg.com/736x/02/2e/98/022e9877180fdc3ef50f973e7620547d.jpg" alt="OVO" style="height: 50px;" />
+      <!-- Logo metode pembayaran GoPay -->
+      <img src="https://i.pinimg.com/736x/55/45/93/554593e209eac39b0bf1d00ec852e8d4.jpg" alt="GoPay" style="height: 50px;" />
+      <!-- Logo metode pembayaran Dana -->
+      <img src="https://i.pinimg.com/736x/51/01/6b/51016b95d66eee665f7b3085f39d5edd.jpg" alt="Dana" style="height: 50px;" />
+      <!-- Logo metode pembayaran QRIS -->
+      <img src="https://i.pinimg.com/736x/61/32/01/613201f43ca0ac0aeecbc3471b7ad557.jpg" alt="QRIS" style="height: 50px;" />
+      <!-- Logo transfer bank -->
+      <img src="https://i.pinimg.com/736x/4f/19/d3/4f19d3ae99df3bbdf1499d16831cd51b.jpg" alt="Transfer Bank" style="height: 50px;" />
+    </div>
+    <p style="color: #7a4f4a; font-size: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">
+      Kami menjamin keamanan pembayaran Anda dengan teknologi SSL dan metode pembayaran terpercaya seperti OVO, GoPay, Dana, QRIS, Transfer Bank, dan pembayaran lainnya. Desain situs kami responsif sehingga nyaman di semua perangkat, dan kami mengoptimalkan kecepatan halaman untuk pengalaman terbaik.
+    </p>
+  </section>
+
+  <script>
+    // Fungsi untuk menutup banner promo tanpa redirect
+    function closePromo() {
+      // Hide only the promo text and the "Tutup Promo" button, keep viral products visible
+      const promoDiscount = document.querySelector('.promo-discount');
+      if (!promoDiscount) return;
+      // Hide the h2, p, and button inside promoDiscount
+      const heading = promoDiscount.querySelector('h2');
+      const paragraph = promoDiscount.querySelector('p');
+      const button = promoDiscount.querySelector('button');
+      if (heading) heading.style.display = 'none';
+      if (paragraph) paragraph.style.display = 'none';
+      if (button) button.style.display = 'none';
+    }
+
+    // Fungsi untuk menutup pop-up promo
+    function tutupPopup() {
+      document.getElementById('promoPopup').style.display = 'none';
+    }
+
+    // Tampilkan pop-up promo setiap kali halaman dimuat (termasuk refresh)
+    window.addEventListener('load', () => {
+      document.getElementById('promoPopup').style.display = 'block';
+    });
+  </script>
+
+<script>
+  // JavaScript untuk slider produk unggulan
+  const sliderTrack = document.querySelector('.slider-track');
+  const prevBtn = document.querySelector('.slider-prev');
+  const nextBtn = document.querySelector('.slider-next');
+  const productCards = document.querySelectorAll('.product-card');
+  const cardWidth = productCards[0].offsetWidth + 20; // width + margin
+  let currentIndex = 0;
+  const maxIndex = productCards.length - Math.floor(document.querySelector('.slider-container').offsetWidth / cardWidth);
+
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      sliderTrack.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < maxIndex) {
+      currentIndex++;
+      sliderTrack.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    }
+  });
+</script>
+
+<!-- JavaScript untuk dropdown dan auto-suggest -->
+<script>
+  // Removed dropdown toggle and related event listeners as dropdown is removed
+  // Daftar parfum untuk fitur saran pencarian
+  const perfumes = [
+    "Acqua di Giò Profumo – Giorgio Armani",
+    "Amouage Reflection Man",
+    "Angel – Mugler",
+    "Black Opium – Yves Saint Laurent",
+    "Bleu de Chanel – Chanel",
+    "Clive Christian No. 1",
+    "Creed Aventus – Creed",
+    "Chanel No. 5 – Chanel",
+    "Diptyque Do Son – Eau De Parfum",
+    "Dior Sauvage – Dior",
+    "Daisy – Marc Jacobs",
+    "Eros – Versace",
+    "Eros – Versace",
+    "Fahrenheit – Dior",
+    "Flowerbomb – Viktor & Rolf",
+    "Gucci Bloom – Gucci",
+    "Gentleman – Givenchy",
+    "Hypnotic Poison – Dior",
+    "Hugo Man – Hugo Boss",
+    "Idôle – Lancôme",
+    "Invictus – Paco Rabanne",
+    "J'adore – Dior",
+    "Joop! Homme – Joop!",
+    "Kenzo Flower – Kenzo",
+    "K by Dolce & Gabbana – Dolce & Gabbana",
+    "La Vie Est Belle – Lancôme",
+    "Le Male – Jean Paul Gaultier",
+    "Miss Dior – Dior",
+    "Montblanc Explorer – Montblanc",
+    "Narciso Rodriguez For Her – Narciso Rodriguez",
+    "Nautica Voyage – Nautica",
+    "Olympea – Paco Rabanne",
+    "One Million – Paco Rabanne",
+    "Poison Girl – Dior",
+    "Pure XS – Paco Rabanne",
+    "Queen of Seduction – Antonio Banderas",
+    "Quasar – O Boticário",
+    "Romance – Ralph Lauren",
+    "Rochas Man – Rochas",
+    "Scandal – Jean Paul Gaultier",
+    "Stronger With You – Emporio Armani",
+    "Tiffany & Co. – Eau de Parfum",
+    "Terre d’Hermès – Hermès",
+    "Un Jardin Sur Le Nil – Hermès",
+    "Uomo – Salvatore Ferragamo",
+    "Versace Bright Crystal – Versace",
+    "Valentino Uomo – Valentino",
+    "Wonderlust – Michael Kors",
+    "Wanted – Azzaro",
+    "X Feminine – Clive Christian",
+    "X Masculine – Clive Christian",
+    "Yves Saint Laurent Libre – YSL",
+    "Y Eau de Parfum – YSL",
+    "Zimaya Tiramisu Caramel – EDP",
+    "Z Woman – Zara",
+    "Z Zegna – Ermenegildo Zegna"
+  ];
+
+  // Ambil elemen input pencarian dan daftar saran
+  const searchInput = document.getElementById('searchInput');
+  const suggestions = document.getElementById('suggestions');
+
+  // Event listener untuk input pencarian
+  searchInput.addEventListener('input', function() {
+    const input = this.value.toLowerCase();
+    suggestions.innerHTML = ''; // Bersihkan daftar saran
+    if (input.length === 0) {
+      return; // Jika input kosong, tidak tampilkan saran
+    }
+    // Cari parfum yang mengandung teks input
+    const filtered = perfumes.filter(p => p.toLowerCase().includes(input));
+    filtered.forEach(item => {
+      const div = document.createElement('div');
+      div.textContent = item;
+      // Saat klik saran, isi input dan sembunyikan daftar saran
+      div.onclick = function() {
+        searchInput.value = item;
+        suggestions.innerHTML = '';
+      };
+      suggestions.appendChild(div);
+    });
+  });
+
+  // Tutup daftar saran jika klik di luar input pencarian
+  document.addEventListener('click', function(e) {
+    if (e.target !== searchInput) {
+      suggestions.innerHTML = '';
+    }
+  });
+</script>
+
+<script>
+  // Store current page as lastPage in sessionStorage for redirect after login/registration
+  sessionStorage.setItem('lastPage', window.location.pathname.split('/').pop() || 'beranda.html');
+
+  // Function to check if user is logged in
+  function isLoggedIn() {
+    return localStorage.getItem('loggedInUser') !== null;
+  }
+
+  // Function to get logged in user data
+  function getLoggedInUser() {
+    const username = localStorage.getItem('loggedInUser');
+    if (!username) return null;
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    return users[username] || null;
+  }
+
+  // Function to update navbar right section based on login state
+  function updateNavbar() {
+    const navRight = document.getElementById('navRight');
+    navRight.innerHTML = '';
+    if (isLoggedIn()) {
+      const user = getLoggedInUser();
+
+      // Create Profil Saya button
+      const profileBtn = document.createElement('button');
+      profileBtn.className = 'dropdown-btn';
+      profileBtn.textContent = 'Profil Saya';
+      profileBtn.id = 'profileBtn';
+      navRight.appendChild(profileBtn);
+
+      // Create popup container
+      const popup = document.createElement('div');
+      popup.id = 'profilePopup';
+      popup.style.position = 'absolute';
+      popup.style.top = '50px';
+      popup.style.right = '0';
+      popup.style.backgroundColor = 'white';
+      popup.style.border = '1px solid #ccc';
+      popup.style.borderRadius = '8px';
+      popup.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      popup.style.padding = '20px';
+      popup.style.width = '250px';
+      popup.style.display = 'none';
+      popup.style.zIndex = '1000';
+
+      // Profile photo
+      const photoDiv = document.createElement('div');
+      photoDiv.style.width = '80px';
+      photoDiv.style.height = '80px';
+      photoDiv.style.borderRadius = '50%';
+      photoDiv.style.backgroundColor = '#d8a6b8';
+      photoDiv.style.backgroundSize = 'cover';
+      photoDiv.style.backgroundPosition = 'center';
+      if (user.photo) {
+        photoDiv.style.backgroundImage = `url(${user.photo})`;
+      }
+      popup.appendChild(photoDiv);
+
+      // User info
+      const nameDiv = document.createElement('div');
+      nameDiv.style.textAlign = 'center';
+      nameDiv.style.marginBottom = '15px';
+      nameDiv.innerHTML = `<strong>${user.fullName || user.username}</strong><br/><small>${user.email || ''}</small>`;
+      popup.appendChild(nameDiv);
+
+      // Logout button
+      const logoutBtn = document.createElement('button');
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.style.backgroundColor = '#b35c7e';
+      logoutBtn.style.color = 'white';
+      logoutBtn.style.border = 'none';
+      logoutBtn.style.padding = '10px 20px';
+      logoutBtn.style.borderRadius = '6px';
+      logoutBtn.style.cursor = 'pointer';
+      logoutBtn.style.width = '100%';
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUser');
+        location.reload();
+      });
+      popup.appendChild(logoutBtn);
+
+      navRight.appendChild(popup);
+
+      // Toggle popup on button click
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // Close popup when clicking outside
+      document.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+
+      // Prevent popup click from closing it
+      popup.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+    } else {
+      const loginLink = document.createElement('a');
+      loginLink.href = 'login.html';
+      loginLink.className = 'nav-link';
+      loginLink.textContent = 'Login';
+      navRight.appendChild(loginLink);
+
+      const registerLink = document.createElement('a');
+      registerLink.href = 'daftar.html';
+      registerLink.className = 'nav-link';
+      registerLink.textContent = 'Daftar';
+      navRight.appendChild(registerLink);
+    }
+  }
+
+  // Initialize navbar on page load
+  document.addEventListener('DOMContentLoaded', updateNavbar);
+  </script>
+  <script>
+    // Add to cart function for static products on beranda.html
+    function addToCartStatic(name, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const exists = cart.find(item => item.name === name);
+      if (!exists) {
+        cart.push({name: name, price: price});
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(name + ' berhasil ditambahkan ke keranjang.');
+      } else {
+        alert(name + ' sudah ada di keranjang.');
+      }
+    }
+
+    // Checkout now function for static products on beranda.html
+    function checkoutNowStatic(name, price) {
+      localStorage.setItem('checkoutProduct', JSON.stringify({name: name, price: price}));
+      window.location.href = 'checkout.html';
+    }
+  </script>
+  <style>
+    .btn-keranjang {
+      background-color: #d4a373;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-keranjang:hover {
+      background-color: #b07a4a;
+    }
+    .btn-checkout {
+      background-color: #b35c7e;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-checkout:hover {
+      background-color: #8e3f5a;
+    }
+    /* New styles for button group and custom buttons */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .button-custom {
+      background-color: #f7c6c7; /* Peach pink soft */
+      color: #5a2a2a; /* Dark text for contrast */
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 90%;
+      max-width: 200px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .button-custom:hover {
+      background-color: #f2b6b8; /* Hover color */
+      transform: scale(1.03);
+    }
+  </style>
+  <style>
+    .lihat-produk-button {
+      background-color: #d4a373;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .lihat-produk-button:hover {
+      background-color: #b07a4a;
+    }
+  </style>
+</body>
+</html>
